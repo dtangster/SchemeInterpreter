@@ -1,5 +1,7 @@
 package frontend;
 
+import java.io.IOException;
+
 public class Token {
     protected TokenType type;  // language-specific token type
     protected String text;     // token text
@@ -13,14 +15,10 @@ public class Token {
      * @param source the source from where to fetch the token's characters.
      * @throws Exception if an error occurred.
      */
-    public Token(Source source)
-            throws Exception
-    {
+    public Token(Source source) throws IOException {
         this.source = source;
         this.lineNum = source.getLineNum();
         this.position = source.getPosition();
-
-
         extract();
     }
 
@@ -76,12 +74,8 @@ public class Token {
      * will be one beyond the last token character.
      * @throws Exception if an error occurred.
      */
-    protected void extract()
-            throws Exception
-    {
+    protected void extract() throws IOException {
         text = Character.toString(currentChar());
-        value = null;
-
         nextChar();  // consume current character
     }
 
@@ -90,9 +84,7 @@ public class Token {
      * @return the current character from the source.
      * @throws Exception if an error occurred.
      */
-    protected char currentChar()
-            throws Exception
-    {
+    protected char currentChar() throws IOException {
         return source.currentChar();
     }
 
@@ -101,9 +93,7 @@ public class Token {
      * @return the next character from the source after moving forward.
      * @throws Exception if an error occurred.
      */
-    protected char nextChar()
-            throws Exception
-    {
+    protected char nextChar() throws IOException {
         return source.nextChar();
     }
 
@@ -112,9 +102,7 @@ public class Token {
      * @return the next character from the source without moving forward.
      * @throws Exception if an error occurred.
      */
-    protected char peekChar()
-            throws Exception
-    {
+    protected char peekChar() throws IOException {
         return source.peekChar();
     }
 }
