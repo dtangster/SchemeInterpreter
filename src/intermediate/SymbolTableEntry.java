@@ -4,5 +4,5 @@ import java.util.HashMap;
 
 public class SymbolTableEntry {
     private String name;
-    private HashMap<String, Object> attributes;
+    private HashMap<Attribute, Object> attributes;
 }
