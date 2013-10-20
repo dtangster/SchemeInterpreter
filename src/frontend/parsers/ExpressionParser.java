@@ -2,6 +2,6 @@ package frontend.parsers;
 
 import frontend.Parser;
 
-public class LetParser extends Parser {
+public class ExpressionParser extends Parser {
 
 }

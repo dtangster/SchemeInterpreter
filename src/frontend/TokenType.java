@@ -22,10 +22,6 @@ public enum TokenType {
         this.text = text;
     }
 
-    /**
-     * Getter.
-     * @return the token text.
-     */
     public String getText() {
         return text;
     }
