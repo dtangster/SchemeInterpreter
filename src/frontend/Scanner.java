@@ -2,6 +2,8 @@ package frontend;
 
 import java.io.IOException;
 import frontend.tokens.*;
+
+import static frontend.ErrorCode.*;
 import static frontend.Source.EOF;
 import static frontend.Source.EOL;
 
@@ -13,7 +15,7 @@ public class Scanner {
         this.source = source;
     }
 
-    public Token extractToken() throws IOException {
+    public Token extractToken() throws Exception {
         skipWhiteSpace();
         Token token;
         char currentChar = currentChar();
@@ -28,15 +30,12 @@ public class Scanner {
         else if (Character.isDigit(currentChar)) {
             token = new NumberToken(source);
         }
-        else if (currentChar == '\'') {
-            token = new PascalStringToken(source);
-        }
-        else if (PascalTokenType.SPECIAL_SYMBOLS
+        else if (TokenType.SPECIAL_SYMBOLS
                 .containsKey(Character.toString(currentChar))) {
-            token = new PascalSpecialSymbolToken(source);
+            token = new SpecialSymbolToken(source);
         }
         else {
-            token = new PascalErrorToken(source, INVALID_CHARACTER,
+            token = new ErrorToken(source, INVALID_CHARACTER,
                     Character.toString(currentChar));
             nextChar();  // consume character
         }
@@ -70,7 +69,7 @@ public class Scanner {
         return currentToken;
     }
 
-    public Token nextToken() throws IOException {
+    public Token nextToken() throws Exception {
         currentToken = extractToken();
         return currentToken;
     }
