@@ -74,6 +74,16 @@ public class Source {
         return lineNum;
     }
 
+    /**
+     * Getter.
+     * @return the position of the next source character in the
+     * current source line.
+     */
+    public int getPosition()
+    {
+        return lineIndex;
+    }
+
     public void close() throws IOException {
         if (reader != null) {
             try {
