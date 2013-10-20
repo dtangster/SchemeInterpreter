@@ -7,11 +7,14 @@ import java.io.IOException;
 public class Source {
     private BufferedReader reader;
     private String line;
+    private int lineNum;
     private int lineIndex;
 
     public Source(String sourceFile) {
         try {
             reader = new BufferedReader(new FileReader(sourceFile));
+            line = reader.readLine();
+            lineNum = 0;
             lineIndex = 0;
         } catch (IOException e) {
             e.printStackTrace();
@@ -20,7 +23,7 @@ public class Source {
 
     public char currentChar() throws IOException {
         // Need to read the next line?
-        if (lineIndex > line.length()) {
+        else if (lineIndex > line.length()) {
             readLine();
             return nextChar();
         }
@@ -38,14 +41,18 @@ public class Source {
 
     private boolean readLine() throws IOException {
         line = reader.readLine();  // Null when at the end of the source
-        lineIndex = -1;
+        lineIndex = 0;
 
         if (line != null) {
-            lineIndex++;
+            lineNum++;
             return true;
         }
 
         return false;
+    }
+
+    public int getLineNum() {
+        return lineNum;
     }
 
     public void close() throws IOException {
