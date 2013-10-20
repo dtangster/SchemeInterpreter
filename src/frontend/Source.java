@@ -5,6 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Source {
+    public static final char EOL = '\n';      // End-of-Line character
+    public static final char EOF = (char) 0;  // End-of-File character
+
     private BufferedReader reader;
     private String line;
     private int lineNum;
@@ -23,9 +26,13 @@ public class Source {
 
     public char currentChar() throws IOException {
         // Need to read the next line?
-        else if (lineIndex > line.length()) {
-            readLine();
-            return nextChar();
+        if (lineIndex > line.length()) {
+            if (readLine()) {
+                return nextChar();
+            }
+            else {
+                return EOF;
+            }
         }
 
         // Return the character at the current position.
@@ -39,7 +46,18 @@ public class Source {
         return currentChar();
     }
 
-    private boolean readLine() throws IOException {
+    // Look at next character without consuming the current one
+    public char peekChar() throws IOException {
+        currentChar();
+        if (line == null) {
+            return EOF;
+        }
+
+        int nextPos = lineIndex + 1;
+        return nextPos < line.length() ? line.charAt(nextPos) : EOL;
+    }
+
+    public boolean readLine() throws IOException {
         line = reader.readLine();  // Null when at the end of the source
         lineIndex = 0;
 
