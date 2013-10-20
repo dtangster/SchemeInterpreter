@@ -15,6 +15,10 @@ public class Parser {
         this.scanner = scanner;
     }
 
+    public void parse() throws IOException {
+
+    }
+
     public Scanner getScanner() {
         return scanner;
     }
