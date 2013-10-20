@@ -2,7 +2,6 @@ package frontend;
 
 import frontend.parsers.ListParser;
 import intermediate.IntermediateCode;
-import intermediate.IntermediateCode;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;

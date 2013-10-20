@@ -1,10 +1,11 @@
 package frontend.tokens;
 
-import frontend.*;
+import frontend.Source;
+import frontend.Token;
 
 import java.io.IOException;
 
-import static frontend.TokenType.*;
+import static frontend.TokenType.SPECIAL_SYMBOLS;
 
 public class SpecialSymbolToken extends Token {
     /**

@@ -3,7 +3,6 @@ import frontend.Parser;
 import frontend.Scanner;
 import frontend.Source;
 import intermediate.IntermediateCode;
-import intermediate.IntermediateCode;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;

@@ -1,6 +1,7 @@
 package frontend.tokens;
 
-import frontend.*;
+import frontend.Source;
+import frontend.Token;
 
 import java.io.IOException;
 

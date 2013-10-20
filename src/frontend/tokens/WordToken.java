@@ -1,10 +1,13 @@
 package frontend.tokens;
 
-import frontend.*;
+import frontend.Source;
+import frontend.Token;
+import frontend.TokenType;
 
 import java.io.IOException;
 
-import static frontend.TokenType.*;
+import static frontend.TokenType.IDENTIFIER;
+import static frontend.TokenType.RESERVED_WORDS;
 
 public class WordToken extends Token {
 

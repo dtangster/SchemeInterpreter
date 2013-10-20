@@ -1,7 +1,6 @@
 package backend;
 
 import intermediate.IntermediateCode;
-import intermediate.IntermediateCode;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;

@@ -5,7 +5,6 @@ import frontend.Scanner;
 import frontend.Token;
 import frontend.TokenType;
 import intermediate.IntermediateCode;
-import intermediate.IntermediateCode;
 
 import java.io.IOException;
 

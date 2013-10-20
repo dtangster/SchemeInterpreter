@@ -1,7 +1,10 @@
 package frontend;
 
+import frontend.tokens.NumberToken;
+import frontend.tokens.SpecialSymbolToken;
+import frontend.tokens.WordToken;
+
 import java.io.IOException;
-import frontend.tokens.*;
 
 import static frontend.Source.EOF;
 import static frontend.Source.EOL;
