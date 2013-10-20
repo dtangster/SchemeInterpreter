@@ -2,11 +2,8 @@ package intermediate;
 
 import java.util.HashMap;
 
-public class SymbolTableEntry {
+public class SymbolTableEntry extends HashMap<Attribute, Object> {
     private String name;
-    private HashMap<Attribute, Object> attributes;
-    private SymbolTableEntry car;
-    private SymbolTableEntry cdr;
 
     public SymbolTableEntry() {
 
