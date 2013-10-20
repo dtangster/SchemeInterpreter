@@ -35,6 +35,7 @@ public class Scheme {
     public static void main(String [] args) {
         if (args.length != 1) {
             System.out.println("Usage: Scheme <filepath>");
+            return;
         }
 
         Scheme scheme = new Scheme(args[0]);
