@@ -29,6 +29,9 @@ public class Scanner {
                     currentChar = nextChar();  // consume comment characters
                 } while ((currentChar != EOL) && (currentChar != EOF));
                 //source.readLine();
+                if (currentChar == EOL) {
+                    currentChar = nextChar();  // consume the EOL
+                }
             }
 
             // Not a comment.
