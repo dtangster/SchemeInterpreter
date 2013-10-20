@@ -6,7 +6,5 @@ public class Parser
 {
     protected static SymbolTableStack symbolTableStack;
 
-     public void parser()
-     { }
-       /// testing
+
 }

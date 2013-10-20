@@ -13,6 +13,7 @@ public class Token {
      * @param source the source from where to fetch the token's characters.
      * @throws Exception if an error occurred.
      */
+
     public Token(Source source)
             throws Exception
     {
