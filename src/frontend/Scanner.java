@@ -46,13 +46,8 @@ public class Scanner {
         while (Character.isWhitespace(currentChar) || (currentChar == ';')) {
             // Start of a comment?
             if (currentChar == ';') {
-                do {
-                    currentChar = nextChar();  // consume comment characters
-                } while ((currentChar != EOL) && (currentChar != EOF));
-                //source.readLine();
-                if (currentChar == EOL) {
-                    currentChar = nextChar();  // consume the EOL
-                }
+                source.readLine();
+                currentChar = source.currentChar();
             }
 
             // Not a comment.
