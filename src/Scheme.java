@@ -33,7 +33,10 @@ public class Scheme {
     }
 
     public static void main(String [] args) {
-        // Do no error checking. Assume the filename is correct and syntax is correct
+        if (args.length != 1) {
+            System.out.println("Usage: Scheme <filepath>");
+        }
+
         Scheme scheme = new Scheme(args[0]);
     }
 }
