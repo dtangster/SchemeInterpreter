@@ -63,6 +63,7 @@ public class Source {
 
         if (line != null) {
             lineNum++;
+            System.out.println(lineNum + " " + line);
             return true;
         }
 

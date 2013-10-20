@@ -12,6 +12,8 @@ public class Scanner {
 
     public Token extractToken() throws IOException {
         skipWhiteSpace();
+
+        // Temporary until we find out what to do
         return new Token();
     }
 
