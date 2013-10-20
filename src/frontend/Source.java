@@ -17,7 +17,7 @@ public class Source {
         try {
             reader = new BufferedReader(new FileReader(sourceFile));
             line = reader.readLine();
-            lineNum = 0;
+            lineNum = -1; // -1 to indicate first line being read
             lineIndex = 0;
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +58,14 @@ public class Source {
     }
 
     public boolean readLine() throws IOException {
-        line = reader.readLine();  // Null when at the end of the source
+        // Prevent skipping first line
+        if (lineNum == -1) {
+            lineNum++;
+        }
+        else {
+            line = reader.readLine();  // Null when at the end of the source
+        }
+
         lineIndex = 0;
 
         if (line != null) {
