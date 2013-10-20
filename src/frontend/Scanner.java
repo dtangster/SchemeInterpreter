@@ -1,6 +1,7 @@
 package frontend;
 
 import java.io.IOException;
+import frontend.tokens.*;
 import static frontend.Source.EOF;
 import static frontend.Source.EOL;
 
@@ -14,9 +15,33 @@ public class Scanner {
 
     public Token extractToken() throws IOException {
         skipWhiteSpace();
+        Token token;
+        char currentChar = currentChar();
 
-        // Temporary until we find out what to do
-        return new Token();
+        // TODO: change this to extract Scheme instead
+        if (currentChar == EOF) {
+            token = new EofToken(source);
+        }
+        else if (Character.isLetter(currentChar)) {
+            token = new WordToken(source);
+        }
+        else if (Character.isDigit(currentChar)) {
+            token = new NumberToken(source);
+        }
+        else if (currentChar == '\'') {
+            token = new PascalStringToken(source);
+        }
+        else if (PascalTokenType.SPECIAL_SYMBOLS
+                .containsKey(Character.toString(currentChar))) {
+            token = new PascalSpecialSymbolToken(source);
+        }
+        else {
+            token = new PascalErrorToken(source, INVALID_CHARACTER,
+                    Character.toString(currentChar));
+            nextChar();  // consume character
+        }
+
+        return token;
     }
 
     private void skipWhiteSpace() throws IOException {
