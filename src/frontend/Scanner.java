@@ -3,7 +3,6 @@ package frontend;
 import java.io.IOException;
 import frontend.tokens.*;
 
-import static frontend.ErrorCode.*;
 import static frontend.Source.EOF;
 import static frontend.Source.EOL;
 
@@ -15,9 +14,9 @@ public class Scanner {
         this.source = source;
     }
 
-    public Token extractToken() throws Exception {
+    public Token extractToken() throws IOException {
         skipWhiteSpace();
-        Token token;
+        Token token = null;
         char currentChar = currentChar();
 
         // TODO: change this to extract Scheme instead
@@ -33,11 +32,6 @@ public class Scanner {
         else if (TokenType.SPECIAL_SYMBOLS
                 .containsKey(Character.toString(currentChar))) {
             token = new SpecialSymbolToken(source);
-        }
-        else {
-            token = new ErrorToken(source, INVALID_CHARACTER,
-                    Character.toString(currentChar));
-            nextChar();  // consume character
         }
 
         return token;
@@ -69,7 +63,7 @@ public class Scanner {
         return currentToken;
     }
 
-    public Token nextToken() throws Exception {
+    public Token nextToken() throws IOException {
         currentToken = extractToken();
         return currentToken;
     }

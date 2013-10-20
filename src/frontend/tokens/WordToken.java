@@ -2,13 +2,13 @@ package frontend.tokens;
 
 import frontend.*;
 
+import java.io.IOException;
+
 import static frontend.TokenType.*;
 
 public class WordToken extends Token {
 
-    public WordToken(Source source)
-            throws Exception
-    {
+    public WordToken(Source source) throws IOException {
         super(source);
     }
 
@@ -16,9 +16,7 @@ public class WordToken extends Token {
      * Extract a Scheme word token from the source.
      * @throws Exception if an error occurred.
      */
-    protected void extract()
-            throws Exception
-    {
+    protected void extract() throws IOException {
         StringBuilder textBuffer = new StringBuilder();
         char currentChar = currentChar();
 

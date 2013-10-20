@@ -1,8 +1,10 @@
 package frontend.tokens;
 
 import frontend.*;
+
+import java.io.IOException;
+
 import static frontend.TokenType.*;
-import static frontend.ErrorCode.*;
 
 public class NumberToken extends Token {
     private static final int MAX_EXPONENT = 37;
@@ -12,9 +14,7 @@ public class NumberToken extends Token {
      * @param source the source from where to fetch the token's characters.
      * @throws Exception if an error occurred.
      */
-    public NumberToken(Source source)
-            throws Exception
-    {
+    public NumberToken(Source source) throws IOException {
         super(source);
     }
 
@@ -22,9 +22,7 @@ public class NumberToken extends Token {
      * Extract a Pascal number token from the source.
      * @throws Exception if an error occurred.
      */
-    protected void extract()
-            throws Exception
-    {
+    protected void extract() throws IOException {
         StringBuilder textBuffer = new StringBuilder();  // token's characters
         extractNumber(textBuffer);
         text = textBuffer.toString();
@@ -35,9 +33,7 @@ public class NumberToken extends Token {
      * @param textBuffer the buffer to append the token's characters.
      * @throws Exception if an error occurred.
      */
-    protected void extractNumber(StringBuilder textBuffer)
-            throws Exception
-    {
+    protected void extractNumber(StringBuilder textBuffer) throws IOException {
         String wholeDigits = null;     // digits before the decimal point
         String fractionDigits = null;  // digits after the decimal point
         String exponentDigits = null;  // exponent digits
@@ -118,17 +114,8 @@ public class NumberToken extends Token {
      * @return the string of digits.
      * @throws Exception if an error occurred.
      */
-    private String unsignedIntegerDigits(StringBuilder textBuffer)
-            throws Exception
-    {
+    private String unsignedIntegerDigits(StringBuilder textBuffer) throws IOException {
         char currentChar = currentChar();
-
-        // Must have at least one digit.
-        if (!Character.isDigit(currentChar)) {
-            type = ERROR;
-            value = INVALID_NUMBER;
-            return null;
-        }
 
         // Extract the digits.
         StringBuilder digits = new StringBuilder();
@@ -147,8 +134,7 @@ public class NumberToken extends Token {
      * @param digits the string of digits.
      * @return the integer value.
      */
-    private int computeIntegerValue(String digits)
-    {
+    private int computeIntegerValue(String digits) {
         // Return 0 if no digits.
         if (digits == null) {
             return 0;
@@ -166,17 +152,7 @@ public class NumberToken extends Token {
                     Character.getNumericValue(digits.charAt(index++));
         }
 
-        // No overflow:  Return the integer value.
-        if (integerValue >= prevValue) {
-            return integerValue;
-        }
-
-        // Overflow:  Set the integer out of range error.
-        else {
-            type = ERROR;
-            value = RANGE_INTEGER;
-            return 0;
-        }
+        return integerValue;
     }
 
     /**
@@ -204,13 +180,6 @@ public class NumberToken extends Token {
         if (fractionDigits != null) {
             exponentValue -= fractionDigits.length();
             digits += fractionDigits;
-        }
-
-        // Check for a real number out of range error.
-        if (Math.abs(exponentValue + wholeDigits.length()) > MAX_EXPONENT) {
-            type = ERROR;
-            value = RANGE_REAL;
-            return 0.0f;
         }
 
         // Loop over the digits to compute the float value.
