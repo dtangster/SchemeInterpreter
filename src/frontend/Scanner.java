@@ -1,6 +1,8 @@
 package frontend;
 
 import java.io.IOException;
+import static frontend.Source.EOF;
+import static frontend.Source.EOL;
 
 public class Scanner {
     private Source source;
@@ -23,7 +25,10 @@ public class Scanner {
         while (Character.isWhitespace(currentChar) || (currentChar == ';')) {
             // Start of a comment?
             if (currentChar == ';') {
-                source.readLine();
+                do {
+                    currentChar = nextChar();  // consume comment characters
+                } while ((currentChar != EOL) && (currentChar != EOF));
+                //source.readLine();
             }
 
             // Not a comment.
