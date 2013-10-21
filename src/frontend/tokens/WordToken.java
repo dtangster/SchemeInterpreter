@@ -28,7 +28,7 @@ public class WordToken extends Token {
         }
 
         text = textBuffer.toString();
-        if (text.compareTo("let") == 0 && peekChar() == '*') {
+        if (text.compareTo("let") == 0 && currentChar() == '*') {
             text.concat("*");
             currentChar = nextChar();
         }

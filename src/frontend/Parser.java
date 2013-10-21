@@ -21,14 +21,22 @@ public class Parser {
         try {
             Token token = nextToken();
 
-            switch (token.getType()) {
-                case LEFT_PAREN:
-                    ListParser listParser = new ListParser(scanner);
-                    intermediateCode = listParser.parse();
-                    break;
-            }
+            while (token.getType() != TokenType.END_OF_FILE) {
+                switch (token.getType()) {
+                    case LEFT_PAREN:
+                        token = nextToken();
+                    case LAMBDA:
+                    case DEFINE:
+                    case IDENTIFIER:
+                        intermediateCode.setCar(parse());
+                        intermediateCode.setCdr(parse());
+                        break;
+                    case RIGHT_PAREN:
+                        token = nextToken();
+                }
 
-            token = currentToken();
+                token = currentToken();
+            }
         }
         catch (IOException e) {
             e.printStackTrace();
