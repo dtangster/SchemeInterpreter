@@ -18,7 +18,11 @@ public class Backend {
         }
 
         if (intermediateCode.getText() != null) {
-            System.out.println(intermediateCode.getText() + '\t' + intermediateCode.getType());
+            //System.out.println(intermediateCode.getText() + '\t' + intermediateCode.getType());
+            System.out.println(intermediateCode.getText());
+        }
+        else {
+            System.out.print('(');
         }
 
         printParseTree(intermediateCode.getCar());

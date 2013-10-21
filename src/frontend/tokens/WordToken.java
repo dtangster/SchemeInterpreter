@@ -29,7 +29,7 @@ public class WordToken extends Token {
 
         text = textBuffer.toString();
         if (text.compareTo("let") == 0 && currentChar() == '*') {
-            text.concat("*");
+            text = "letstar";
             currentChar = nextChar();
         }
 
@@ -37,5 +37,9 @@ public class WordToken extends Token {
         type = (RESERVED_WORDS.contains(text))
                 ? TokenType.valueOf(text.toUpperCase())  // reserved word
                 : IDENTIFIER;                                  // identifier
+
+        if (text.compareTo("letstar") == 0) {
+            text = "let*";
+        }
     }
 }
