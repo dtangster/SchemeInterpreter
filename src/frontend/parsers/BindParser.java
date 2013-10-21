@@ -7,19 +7,16 @@ import intermediate.IntermediateCode;
 
 import java.io.IOException;
 
-public class ListParser extends Parser {
-    public ListParser(Scanner scanner) {
+public class BindParser extends Parser {
+    public BindParser(Scanner scanner) {
         super(scanner);
     }
 
     public IntermediateCode parse(Token token) throws IOException {
         switch (token.getType()) {
-            case DEFINE:
-                BindParser bindParser = new BindParser(scanner);
-                intermediateCode = bindParser.parse(token);
+            case IDENTIFIER:
+
                 break;
         }
-
-        return intermediateCode;
     }
 }
