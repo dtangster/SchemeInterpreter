@@ -5,7 +5,8 @@ import frontend.Token;
 
 import java.io.IOException;
 
-import static frontend.TokenType.*;
+import static frontend.TokenType.INTEGER;
+import static frontend.TokenType.REAL;
 
 public class NumberToken extends Token {
     public NumberToken(Source source) throws IOException {

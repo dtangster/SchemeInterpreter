@@ -7,7 +7,6 @@ import frontend.tokens.WordToken;
 import java.io.IOException;
 
 import static frontend.Source.EOF;
-import static frontend.Source.EOL;
 
 public class Scanner {
     private Source source;
