@@ -1,6 +1,5 @@
 package frontend;
 
-import frontend.parsers.ListParser;
 import intermediate.IntermediateCode;
 import intermediate.SymbolTableStack;
 
@@ -21,6 +20,7 @@ public class Parser {
         try {
             Token token = nextToken();
 
+            //TODO: These cases are not correct. Just trying to read entire file without errors.
             while (token.getType() != TokenType.END_OF_FILE) {
                 switch (token.getType()) {
                     case LEFT_PAREN:
@@ -32,6 +32,8 @@ public class Parser {
                         intermediateCode.setCdr(parse());
                         break;
                     case RIGHT_PAREN:
+                    case QUOTE:
+                    case NOT:
                         token = nextToken();
                 }
 
