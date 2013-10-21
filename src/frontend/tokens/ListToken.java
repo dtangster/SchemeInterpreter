@@ -11,6 +11,6 @@ public class ListToken extends Token {
     }
 
     protected void extract() throws IOException {
-        //TODO: Need to implement this
+        //TODO: Need to implement this. This token will rely on ALL the other tokens.
     }
 }
