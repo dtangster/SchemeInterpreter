@@ -13,12 +13,15 @@ public class BindParser extends Parser {
     }
 
     public IntermediateCode parse(Token token) throws IOException {
+        Parser parser = new Parser(scanner);
         token = nextToken(); // Consume (
 
         switch (token.getType()) {
             case LEFT_PAREN:
                 ListParser listParser = new ListParser(scanner);
-                intermediateCode = listParser.parse(token);
+                intermediateCode.setCar(listParser.parse(token));
+                token = currentToken();
+                intermediateCode.setCdr(parser.parse());
                 break;
             case IDENTIFIER:
 

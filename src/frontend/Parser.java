@@ -13,22 +13,28 @@ public class Parser {
 
     public Parser(Scanner scanner) {
         symbolTableStack = new SymbolTableStack();
+        intermediateCode = new IntermediateCode();
         this.scanner = scanner;
     }
 
-    public void parse() throws IOException {
+    public IntermediateCode parse() throws IOException {
         try {
             Token token = nextToken();
 
-            if (token.getType() == TokenType.LEFT_PAREN) {
-                ListParser listParser = new ListParser(scanner);
-                intermediateCode = listParser.parse(token);
-                token = currentToken();
+            switch (token.getType()) {
+                case LEFT_PAREN:
+                    ListParser listParser = new ListParser(scanner);
+                    intermediateCode = listParser.parse(token);
+                    break;
             }
+
+            token = currentToken();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+
+        return intermediateCode;
     }
 
     public Scanner getScanner() {
