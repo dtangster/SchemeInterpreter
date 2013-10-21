@@ -24,7 +24,7 @@ public class Parser {
             switch (token.getType()) {
                 case LEFT_PAREN:
                     ListParser listParser = new ListParser(scanner);
-                    intermediateCode = listParser.parse(token);
+                    intermediateCode = listParser.parse();
                     break;
             }
 

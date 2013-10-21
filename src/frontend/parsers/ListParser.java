@@ -12,26 +12,26 @@ public class ListParser extends Parser {
         super(scanner);
     }
 
-    public IntermediateCode parse(Token token) throws IOException {
+    public IntermediateCode parse() throws IOException {
         Parser parser = new Parser(scanner);
-        token = nextToken(); // Consume (
+        Token currentToken = nextToken(); // Consume (
 
-        switch (token.getType()) {
+        switch (currentToken.getType()) {
             case LEFT_PAREN:
                 ListParser listParser = new ListParser(scanner);
-                intermediateCode.setCar(listParser.parse(token));
+                intermediateCode.setCar(listParser.parse());
                 intermediateCode.setCdr(parser.parse());
                 break;
             case DEFINE:
                 BindParser bindParser = new BindParser(scanner);
-                intermediateCode.setCar(bindParser.parse(token));
+                intermediateCode.setCar(bindParser.parse());
                 intermediateCode.setCdr(parser.parse());
                 break;
             case IDENTIFIER:
                 break;
         }
 
-        token = currentToken();
+        currentToken = currentToken();
         return intermediateCode;
     }
 }

@@ -19,6 +19,7 @@ public class SpecialSymbolToken extends Token {
         type = null;
 
         switch (currentChar) {
+            case '(':
             case '+':
             case '-':
             case '*':
