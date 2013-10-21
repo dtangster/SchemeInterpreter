@@ -20,7 +20,9 @@ public class WordToken extends Token {
 
         // Get the word characters (letter or digit).  The scanner has
         // already determined that the first character is a letter.
-        while (Character.isLetterOrDigit(currentChar)) {
+        while (Character.isLetterOrDigit(currentChar)
+                || currentChar == '-' || currentChar == '?')
+        {
             textBuffer.append(currentChar);
             currentChar = nextChar();  // consume character
         }

@@ -21,7 +21,6 @@ public class NumberToken extends Token {
     protected void extractNumber(StringBuilder textBuffer) throws IOException {
         String wholeDigits = null;     // digits before the decimal point
         String fractionDigits = null;  // digits after the decimal point
-        boolean sawDotDot = false;     // true if saw .. token
         char currentChar;              // current character
 
         type = INTEGER;  // assume INTEGER token type for now
@@ -30,56 +29,24 @@ public class NumberToken extends Token {
         wholeDigits = unsignedIntegerDigits(textBuffer);
 
         // Is there a . ?
-        // It could be a decimal point or the start of a .. token.
         currentChar = currentChar();
         if (currentChar == '.') {
-            if (peekChar() == '.') {
-                sawDotDot = true;  // it's a ".." token, so don't consume it
-            }
-            else {
-                type = REAL;  // decimal point, so token type is REAL
-                textBuffer.append(currentChar);
-                currentChar = nextChar();  // consume decimal point
-
-                // Collect the digits of the fraction part of the number.
-                fractionDigits = unsignedIntegerDigits(textBuffer);
-            }
-        }
-
-        // Is there an exponent part?
-        // There cannot be an exponent if we already saw a ".." token.
-        currentChar = currentChar();
-        if (!sawDotDot && ((currentChar == 'E') || (currentChar == 'e'))) {
-            type = REAL;  // exponent, so token type is REAL
+            type = REAL;  // decimal point, so token type is REAL
             textBuffer.append(currentChar);
-            currentChar = nextChar();  // consume 'E' or 'e'
+            currentChar = nextChar();  // consume decimal point
 
-            // Exponent sign?
-            if ((currentChar == '+') || (currentChar == '-')) {
-                textBuffer.append(currentChar);
-                currentChar = nextChar();  // consume '+' or '-'
-            }
+            // Collect the digits of the fraction part of the number.
+            fractionDigits = unsignedIntegerDigits(textBuffer);
         }
 
-        // Compute the value of an integer number token.
         if (type == INTEGER) {
-            int integerValue = computeIntegerValue(wholeDigits);
-            value = integerValue;
+            value = computeIntegerValue(wholeDigits);
         }
-
-        // Compute the value of a real number token.
         else if (type == REAL) {
-            float floatValue = computeFloatValue(wholeDigits, fractionDigits);
-            value = floatValue;
+            value = computeFloatValue(wholeDigits, fractionDigits);
         }
     }
 
-    /**
-     * Extract and return the digits of an unsigned integer.
-     * @param textBuffer the buffer to append the token's characters.
-     * @return the string of digits.
-     * @throws Exception if an error occurred.
-     */
     private String unsignedIntegerDigits(StringBuilder textBuffer) throws IOException {
         char currentChar = currentChar();
 
@@ -94,12 +61,6 @@ public class NumberToken extends Token {
         return digits.toString();
     }
 
-    /**
-     * Compute and return the integer value of a string of digits.
-     * Check for overflow.
-     * @param digits the string of digits.
-     * @return the integer value.
-     */
     private int computeIntegerValue(String digits) {
         // Return 0 if no digits.
         if (digits == null) {
@@ -121,13 +82,7 @@ public class NumberToken extends Token {
         return integerValue;
     }
 
-    /**
-     * Compute and return the float value of a real number.
-     * @param wholeDigits the string of digits before the decimal point.
-     * @param fractionDigits the string of digits after the decimal point.
-     * @return the float value.
-     */
-    private float computeFloatValue(String wholeDigits, String fractionDigits) {
+    private double computeFloatValue(String wholeDigits, String fractionDigits) {
         double floatValue = 0.0;
         String digits = wholeDigits;  // whole and fraction digits
 
@@ -140,10 +95,9 @@ public class NumberToken extends Token {
         // Loop over the digits to compute the float value.
         int index = 0;
         while (index < digits.length()) {
-            floatValue = 10*floatValue +
-                    Character.getNumericValue(digits.charAt(index++));
+            floatValue = 10 * floatValue + Character.getNumericValue(digits.charAt(index++));
         }
 
-        return (float) floatValue;
+        return floatValue;
     }
 }
