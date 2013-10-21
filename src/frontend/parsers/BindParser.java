@@ -20,7 +20,6 @@ public class BindParser extends Parser {
             case LEFT_PAREN:
                 ListParser listParser = new ListParser(scanner);
                 intermediateCode.setCar(listParser.parse(token));
-                token = currentToken();
                 intermediateCode.setCdr(parser.parse());
                 break;
             case IDENTIFIER:

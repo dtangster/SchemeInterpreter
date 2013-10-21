@@ -20,19 +20,18 @@ public class ListParser extends Parser {
             case LEFT_PAREN:
                 ListParser listParser = new ListParser(scanner);
                 intermediateCode.setCar(listParser.parse(token));
-                token = currentToken();
                 intermediateCode.setCdr(parser.parse());
                 break;
             case DEFINE:
                 BindParser bindParser = new BindParser(scanner);
                 intermediateCode.setCar(bindParser.parse(token));
-                token = currentToken();
                 intermediateCode.setCdr(parser.parse());
                 break;
             case IDENTIFIER:
                 break;
         }
 
+        token = currentToken();
         return intermediateCode;
     }
 }
