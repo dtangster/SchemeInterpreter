@@ -20,6 +20,7 @@ public class SpecialSymbolToken extends Token {
 
         switch (currentChar) {
             case '(':
+            case ')':
             case '+':
             case '-':
             case '*':

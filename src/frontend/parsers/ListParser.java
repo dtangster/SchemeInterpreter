@@ -22,6 +22,10 @@ public class ListParser extends Parser {
                 intermediateCode.setCar(listParser.parse());
                 intermediateCode.setCdr(parser.parse());
                 break;
+
+            // Trying things
+            case LAMBDA:
+
             case DEFINE:
                 BindParser bindParser = new BindParser(scanner);
                 intermediateCode.setCar(bindParser.parse());

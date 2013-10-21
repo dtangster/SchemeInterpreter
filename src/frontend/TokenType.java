@@ -12,7 +12,7 @@ public enum TokenType {
     GREATER_THAN(">"), LEFT_PAREN("("), RIGHT_PAREN(")"),
 
     // Others
-    IDENTIFIER, INTEGER, REAL, STRING, FUNCTION, ERROR, END_OF_FILE;
+    IDENTIFIER, INTEGER, REAL, STRING, ERROR, END_OF_FILE;
 
     private static final int FIRST_RESERVED_INDEX = AND.ordinal();
     private static final int LAST_RESERVED_INDEX  = OR.ordinal();

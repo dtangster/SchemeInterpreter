@@ -28,6 +28,10 @@ public class WordToken extends Token {
         }
 
         text = textBuffer.toString();
+        if (text.compareTo("let") == 0 && peekChar() == '*') {
+            text.concat("*");
+            currentChar = nextChar();
+        }
 
         // Is it a reserved word or an identifier?
         type = (RESERVED_WORDS.contains(text))
