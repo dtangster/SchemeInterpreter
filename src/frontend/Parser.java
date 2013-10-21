@@ -37,7 +37,8 @@ public class Parser {
                 default:
                     root.setText(token.getText());
                     root.setType(token.getType().getText());
-                    parse(root);
+                    root.setCdr(new IntermediateCode());
+                    parse(root.getCdr());
                     break;
             }
         }
