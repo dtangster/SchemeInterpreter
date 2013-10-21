@@ -30,7 +30,7 @@ public class WordToken extends Token {
         text = textBuffer.toString();
 
         // Is it a reserved word or an identifier?
-        type = (RESERVED_WORDS.contains(text.toLowerCase()))
+        type = (RESERVED_WORDS.contains(text))
                 ? TokenType.valueOf(text.toUpperCase())  // reserved word
                 : IDENTIFIER;                                  // identifier
     }
