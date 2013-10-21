@@ -6,6 +6,7 @@ public class IntermediateCode {
     private IntermediateCode car;
     private IntermediateCode cdr;
 
+
     public IntermediateCode() {}
 
     public IntermediateCode(IntermediateCodeType type) {
@@ -27,6 +28,7 @@ public class IntermediateCode {
     public IntermediateCode getCdr() {
         return cdr;
     }
+
 
     public void setParent(IntermediateCode parent) {
         this.parent = parent;

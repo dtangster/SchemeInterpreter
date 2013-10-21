@@ -5,7 +5,7 @@ import java.util.Hashtable;
 
 public enum TokenType {
     // Reserved words
-    AND, COND, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR("let*"), NOT, OR,
+    AND, COND, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR("let*"), NOT, OR, CONS,
 
     // Special Symbols
     QUOTE("'"), EQUALS("="), LESS_THAN("<"), LESS_EQUALS("<="), GREATER_EQUALS(">="),
@@ -34,7 +34,7 @@ public enum TokenType {
         return text;
     }
 
-    // Set of lower-cased Pascal reserved word text strings.
+    // Set of lower-cased Scheme reserved word text strings.
     public static HashSet<String> RESERVED_WORDS = new HashSet<String>();
     static {
         TokenType values[] = TokenType.values();
@@ -43,8 +43,8 @@ public enum TokenType {
         }
     }
 
-    // Hash table of Pascal special symbols.  Each special symbol's text
-    // is the key to its Pascal token type.
+    // Hash table of Scheme special symbols.  Each special symbol's text
+    // is the key to its Scheme token type.
     public static Hashtable<String, TokenType> SPECIAL_SYMBOLS =
             new Hashtable<String, TokenType>();
     static {

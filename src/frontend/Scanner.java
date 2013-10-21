@@ -1,6 +1,5 @@
 package frontend;
 
-import frontend.tokens.ListToken;
 import frontend.tokens.NumberToken;
 import frontend.tokens.SpecialSymbolToken;
 import frontend.tokens.WordToken;
@@ -32,9 +31,7 @@ public class Scanner {
         else if (Character.isDigit(currentChar)) {
             token = new NumberToken(source);
         }
-        else if (currentChar == '(') {
-            token = new ListToken(source);
-        }
+
         else if (TokenType.SPECIAL_SYMBOLS
                 .containsKey(Character.toString(currentChar))) {
             token = new SpecialSymbolToken(source);
