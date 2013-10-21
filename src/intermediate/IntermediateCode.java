@@ -1,19 +1,19 @@
 package intermediate;
 
 public class IntermediateCode {
-    private String data;
+    private IntermediateCodeType type;
     private IntermediateCode parent;
     private IntermediateCode car;
     private IntermediateCode cdr;
 
     public IntermediateCode() {}
 
-    public IntermediateCode(String data) {
-        this.data = data;
+    public IntermediateCode(IntermediateCodeType type) {
+        this.type = type;
     }
 
-    public String getData() {
-        return data;
+    public IntermediateCodeType getType() {
+        return type;
     }
 
     public IntermediateCode getParent() {
