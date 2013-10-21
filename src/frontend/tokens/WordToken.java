@@ -10,15 +10,10 @@ import static frontend.TokenType.IDENTIFIER;
 import static frontend.TokenType.RESERVED_WORDS;
 
 public class WordToken extends Token {
-
     public WordToken(Source source) throws IOException {
         super(source);
     }
 
-    /**
-     * Extract a Scheme word token from the source.
-     * @throws Exception if an error occurred.
-     */
     protected void extract() throws IOException {
         StringBuilder textBuffer = new StringBuilder();
         char currentChar = currentChar();
@@ -37,5 +32,4 @@ public class WordToken extends Token {
                 ? TokenType.valueOf(text.toUpperCase())  // reserved word
                 : IDENTIFIER;                                  // identifier
     }
-
 }

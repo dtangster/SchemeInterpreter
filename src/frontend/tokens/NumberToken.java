@@ -8,37 +8,19 @@ import java.io.IOException;
 import static frontend.TokenType.*;
 
 public class NumberToken extends Token {
-    private static final int MAX_EXPONENT = 37;
-
-    /**
-     * Constructor.
-     * @param source the source from where to fetch the token's characters.
-     * @throws Exception if an error occurred.
-     */
     public NumberToken(Source source) throws IOException {
         super(source);
     }
 
-    /**
-     * Extract a Pascal number token from the source.
-     * @throws Exception if an error occurred.
-     */
     protected void extract() throws IOException {
         StringBuilder textBuffer = new StringBuilder();  // token's characters
         extractNumber(textBuffer);
         text = textBuffer.toString();
     }
 
-    /**
-     * Extract a Pascal number token from the source.
-     * @param textBuffer the buffer to append the token's characters.
-     * @throws Exception if an error occurred.
-     */
     protected void extractNumber(StringBuilder textBuffer) throws IOException {
         String wholeDigits = null;     // digits before the decimal point
         String fractionDigits = null;  // digits after the decimal point
-        String exponentDigits = null;  // exponent digits
-        char exponentSign = '+';       // exponent sign '+' or '-'
         boolean sawDotDot = false;     // true if saw .. token
         char currentChar;              // current character
 
@@ -46,9 +28,6 @@ public class NumberToken extends Token {
 
         // Extract the digits of the whole part of the number.
         wholeDigits = unsignedIntegerDigits(textBuffer);
-        if (type == ERROR) {
-            return;
-        }
 
         // Is there a . ?
         // It could be a decimal point or the start of a .. token.
@@ -64,9 +43,6 @@ public class NumberToken extends Token {
 
                 // Collect the digits of the fraction part of the number.
                 fractionDigits = unsignedIntegerDigits(textBuffer);
-                if (type == ERROR) {
-                    return;
-                }
             }
         }
 
@@ -81,31 +57,20 @@ public class NumberToken extends Token {
             // Exponent sign?
             if ((currentChar == '+') || (currentChar == '-')) {
                 textBuffer.append(currentChar);
-                exponentSign = currentChar;
                 currentChar = nextChar();  // consume '+' or '-'
             }
-
-            // Extract the digits of the exponent.
-            exponentDigits = unsignedIntegerDigits(textBuffer);
         }
 
         // Compute the value of an integer number token.
         if (type == INTEGER) {
             int integerValue = computeIntegerValue(wholeDigits);
-
-            if (type != ERROR) {
-                value = new Integer(integerValue);
-            }
+            value = integerValue;
         }
 
         // Compute the value of a real number token.
         else if (type == REAL) {
-            float floatValue = computeFloatValue(wholeDigits, fractionDigits,
-                    exponentDigits, exponentSign);
-
-            if (type != ERROR) {
-                value = new Float(floatValue);
-            }
+            float floatValue = computeFloatValue(wholeDigits, fractionDigits);
+            value = floatValue;
         }
     }
 
@@ -160,26 +125,15 @@ public class NumberToken extends Token {
      * Compute and return the float value of a real number.
      * @param wholeDigits the string of digits before the decimal point.
      * @param fractionDigits the string of digits after the decimal point.
-     * @param exponentDigits the string of exponent digits.
-     * @param exponentSign the exponent sign.
      * @return the float value.
      */
-    private float computeFloatValue(String wholeDigits, String fractionDigits,
-                                    String exponentDigits, char exponentSign)
-    {
+    private float computeFloatValue(String wholeDigits, String fractionDigits) {
         double floatValue = 0.0;
-        int exponentValue = computeIntegerValue(exponentDigits);
         String digits = wholeDigits;  // whole and fraction digits
-
-        // Negate the exponent if the exponent sign is '-'.
-        if (exponentSign == '-') {
-            exponentValue = -exponentValue;
-        }
 
         // If there are any fraction digits, adjust the exponent value
         // and append the fraction digits.
         if (fractionDigits != null) {
-            exponentValue -= fractionDigits.length();
             digits += fractionDigits;
         }
 
@@ -188,11 +142,6 @@ public class NumberToken extends Token {
         while (index < digits.length()) {
             floatValue = 10*floatValue +
                     Character.getNumericValue(digits.charAt(index++));
-        }
-
-        // Adjust the float value based on the exponent value.
-        if (exponentValue != 0) {
-            floatValue *= Math.pow(10, exponentValue);
         }
 
         return (float) floatValue;

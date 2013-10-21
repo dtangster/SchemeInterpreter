@@ -8,19 +8,10 @@ import java.io.IOException;
 import static frontend.TokenType.SPECIAL_SYMBOLS;
 
 public class SpecialSymbolToken extends Token {
-    /**
-     * Constructor.
-     * @param source the source from where to fetch the token's characters.
-     * @throws Exception if an error occurred.
-     */
     public SpecialSymbolToken(Source source) throws IOException {
         super(source);
     }
 
-    /**
-     * Extract a special symbol token from the source.
-     * @throws Exception if an error occurred.
-     */
     protected void extract() throws IOException {
         char currentChar = currentChar();
 
@@ -28,38 +19,20 @@ public class SpecialSymbolToken extends Token {
         type = null;
 
         switch (currentChar) {
-
-            // Single-character special symbols.
-            case '+':  case '-':  case '*':  case '/':  case ',':
-            case ';':  case '\'': case '=':  case '(':  case ')':
-            case '[':  case ']':  case '{':  case '}':  case '^': {
+            case '+':
+            case '-':
+            case '*':
+            case '/':
                 nextChar();  // consume character
                 break;
-            }
 
-            // : or :=
-            case ':': {
-                currentChar = nextChar();  // consume ':';
-
-                if (currentChar == '=') {
-                    text += currentChar;
-                    nextChar();  // consume '='
-                }
-
-                break;
-            }
-
-            // < or <= or <>
+            // < or <=
             case '<': {
                 currentChar = nextChar();  // consume '<';
 
                 if (currentChar == '=') {
                     text += currentChar;
                     nextChar();  // consume '='
-                }
-                else if (currentChar == '>') {
-                    text += currentChar;
-                    nextChar();  // consume '>'
                 }
 
                 break;
@@ -72,18 +45,6 @@ public class SpecialSymbolToken extends Token {
                 if (currentChar == '=') {
                     text += currentChar;
                     nextChar();  // consume '='
-                }
-
-                break;
-            }
-
-            // . or ..
-            case '.': {
-                currentChar = nextChar();  // consume '.';
-
-                if (currentChar == '.') {
-                    text += currentChar;
-                    nextChar();  // consume '.'
                 }
 
                 break;
