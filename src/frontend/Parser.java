@@ -35,6 +35,7 @@ public class Parser {
                     case QUOTE:
                     case NOT:
                         token = nextToken();
+                        break;
                 }
 
                 token = currentToken();

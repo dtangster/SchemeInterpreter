@@ -26,7 +26,7 @@ public class Source {
 
     public char currentChar() throws IOException {
         // Need to read the next line?
-        if (lineIndex == line.length()) {
+        if (lineIndex >= line.length()) {
             if (readLine()) {
                 return nextChar();
             }
