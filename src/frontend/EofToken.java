@@ -11,6 +11,7 @@ public class EofToken extends Token {
      */
     public EofToken(Source source) throws IOException {
         super(source);
+        type = TokenType.END_OF_FILE;
     }
 
     /**

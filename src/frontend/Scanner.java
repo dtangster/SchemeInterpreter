@@ -21,7 +21,6 @@ public class Scanner {
         Token token = null;
         char currentChar = currentChar();
 
-        // TODO: change this to extract Scheme instead
         if (currentChar == EOF) {
             token = new EofToken(source);
         }
@@ -31,7 +30,6 @@ public class Scanner {
         else if (Character.isDigit(currentChar)) {
             token = new NumberToken(source);
         }
-
         else if (TokenType.SPECIAL_SYMBOLS
                 .containsKey(Character.toString(currentChar))) {
             token = new SpecialSymbolToken(source);

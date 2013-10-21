@@ -16,36 +16,34 @@ public class Parser {
         this.scanner = scanner;
     }
 
-    public IntermediateCode parse() throws IOException {
+    public void parse() throws IOException {
+        parse(intermediateCode);
+    }
+
+    public void parse(IntermediateCode root) throws IOException {
         try {
             Token token = nextToken();
 
-            //TODO: These cases are not correct. Just trying to read entire file without errors.
-            while (token.getType() != TokenType.END_OF_FILE) {
-                switch (token.getType()) {
-                    case LEFT_PAREN:
-                        token = nextToken();
-                    case LAMBDA:
-                    case DEFINE:
-                    case IDENTIFIER:
-                        intermediateCode.setCar(parse());
-                        intermediateCode.setCdr(parse());
-                        break;
-                    case RIGHT_PAREN:
-                    case QUOTE:
-                    case NOT:
-                        token = nextToken();
-                        break;
-                }
-
-                token = currentToken();
+            switch (token.getType()) {
+                case LEFT_PAREN:
+                    root.setCar(new IntermediateCode());
+                    parse(root.getCar());
+                    break;
+                case RIGHT_PAREN:
+                    parse(root);
+                    break;
+                case END_OF_FILE:
+                    break;
+                default:
+                    root.setText(token.getText());
+                    root.setType(token.getType().getText());
+                    parse(root);
+                    break;
             }
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-
-        return intermediateCode;
     }
 
     public Scanner getScanner() {

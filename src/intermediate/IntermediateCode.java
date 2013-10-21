@@ -1,24 +1,32 @@
 package intermediate;
 
 public class IntermediateCode {
-    private IntermediateCodeType type;
-    private IntermediateCode parent;
+    private String text;
+    private String type;
     private IntermediateCode car;
     private IntermediateCode cdr;
 
-
     public IntermediateCode() {}
 
-    public IntermediateCode(IntermediateCodeType type) {
+    public IntermediateCode(String text, String type) {
+        this.text = text;
         this.type = type;
     }
 
-    public IntermediateCodeType getType() {
+    public String getText() {
+        return text;
+    }
+
+    public String getType() {
         return type;
     }
 
-    public IntermediateCode getParent() {
-        return parent;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public IntermediateCode getCar() {
@@ -27,11 +35,6 @@ public class IntermediateCode {
 
     public IntermediateCode getCdr() {
         return cdr;
-    }
-
-
-    public void setParent(IntermediateCode parent) {
-        this.parent = parent;
     }
 
     public void setCar(IntermediateCode car) {
