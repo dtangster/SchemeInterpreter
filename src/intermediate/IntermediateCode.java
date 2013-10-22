@@ -1,15 +1,17 @@
 package intermediate;
 
+import frontend.TokenType;
+
 public class IntermediateCode {
     private String text;
-    private String type;
+    private TokenType type;
     private IntermediateCode parent;
     private IntermediateCode car;
     private IntermediateCode cdr;
 
     public IntermediateCode() {}
 
-    public IntermediateCode(String text, String type) {
+    public IntermediateCode(String text, TokenType type) {
         this.text = text;
         this.type = type;
     }
@@ -18,7 +20,7 @@ public class IntermediateCode {
         return text;
     }
 
-    public String getType() {
+    public TokenType getType() {
         return type;
     }
 
@@ -26,7 +28,7 @@ public class IntermediateCode {
         this.text = text;
     }
 
-    public void setType(String type) {
+    public void setType(TokenType type) {
         this.type = type;
     }
 
@@ -52,5 +54,9 @@ public class IntermediateCode {
 
     public void setCdr(IntermediateCode cdr) {
         this.cdr = cdr;
+    }
+
+    public String toString() {
+        return '\t' + text + '\t' + type;
     }
 }

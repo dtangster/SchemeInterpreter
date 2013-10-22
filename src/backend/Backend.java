@@ -10,6 +10,7 @@ public class Backend {
     public void process(ArrayList<IntermediateCode> intermediateCodes,
                         SymbolTableStack symbolTableStack) throws IOException
     {
+        System.out.println("\n----------Printing List Tree---------\n");
         for (IntermediateCode iCode : intermediateCodes) {
             printParseTree(iCode);
         }

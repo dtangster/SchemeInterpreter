@@ -79,4 +79,12 @@ public class Scanner {
     public char peekChar() throws IOException {
         return source.peekChar();
     }
+
+    public String toString() {
+        return source.toString();
+    }
+
+    public int getPosition() {
+        return source.getPosition();
+    }
 }

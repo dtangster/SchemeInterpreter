@@ -74,7 +74,6 @@ public class Source {
 
         if (line != null) {
             lineNum++;
-            System.out.println(lineNum + " " + line);
             return true;
         }
 
@@ -99,5 +98,9 @@ public class Source {
                 throw e;
             }
         }
+    }
+
+    public String toString() {
+        return "LINE " + lineNum + " " + line;
     }
 }

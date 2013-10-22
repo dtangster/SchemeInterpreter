@@ -29,6 +29,11 @@ public class Parser {
         try {
             IntermediateCode newNode;
             Token token = nextToken();
+            System.out.println(token);
+
+            if (scanner.getPosition() == 0) {
+                System.out.println(scanner);
+            }
 
             switch (token.getType()) {
                 case LEFT_PAREN:
@@ -55,7 +60,7 @@ public class Parser {
                     newNode = new IntermediateCode();
                     newNode.setParent(root);
                     root.setText(token.getText());
-                    root.setType(token.getType().getText());
+                    root.setType(token.getType());
                     root.setCdr(newNode);
                     parse(newNode);
                     break;
