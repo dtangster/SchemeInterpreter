@@ -24,6 +24,8 @@ public class Parser {
     }
 
     public void parse() throws IOException {
+        System.out.println("\n----------Printing Tokens---------\n");
+
         while (scanner.peekChar() != Source.EOF) {
             IntermediateCode newNode = new IntermediateCode();
             topLevelLists.add(newNode);
