@@ -8,9 +8,8 @@ public enum TokenType {
     AND, COND, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR, NOT, OR, CONS, NULL,
 
     // Special Symbols
-    QUOTE("'"), EQUALS("="), LESS_THAN("<"), LESS_EQUALS("<="), GREATER_EQUALS(">="),
-    GREATER_THAN(">"), LEFT_PAREN , RIGHT_PAREN , PLUS ("+"), MINUS ("-"),MULTIPLICATION ("*"), DIVISIOR ("/"),
-
+    QUOTE("'"), EQUALS("="), LESS_THAN("<"), LESS_EQUALS("<="), GREATER_EQUALS(">="), GREATER_THAN(">"),
+    LEFT_PAREN("("), RIGHT_PAREN(")"),
 
     // Others
     IDENTIFIER, INTEGER, REAL, STRING, SYMBOL, ERROR, END_OF_FILE;

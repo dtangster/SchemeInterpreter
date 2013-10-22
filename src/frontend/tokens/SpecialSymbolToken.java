@@ -6,7 +6,7 @@ import frontend.Token;
 import java.io.IOException;
 
 import static frontend.TokenType.SPECIAL_SYMBOLS;
-import static frontend.TokenType.*;
+
 
 public class SpecialSymbolToken extends Token {
     public SpecialSymbolToken(Source source) throws IOException {
@@ -21,39 +21,13 @@ public class SpecialSymbolToken extends Token {
 
         switch (currentChar) {
             case '(':
-                type = LEFT_PAREN;
-                text = Character.toString(currentChar);
-                value = currentChar;
-                break;
             case ')':
-                type = RIGHT_PAREN;
-                text = Character.toString(currentChar);
-                value = currentChar;
-                break;
             case '+':
-                type = PLUS;
-                text = Character.toString(currentChar);
-                value = currentChar;
-                break;
             case '-':
-                type = MINUS;
-                text = Character.toString(currentChar);
-                value = currentChar;
-                break;
             case '*':
-                type = MULTIPLICATION;
-                text = Character.toString(currentChar);
-                value = currentChar;
-                break;
             case '/':
-                type = DIVISIOR;
-                text = Character.toString(currentChar);
-                value = currentChar;
-                break;
             case '\'':
-                type = QUOTE;
-                text = Character.toString(currentChar);
-                value = currentChar;
+                nextChar();
                 break;
 
             // < or <=
