@@ -32,6 +32,9 @@ public class WordToken extends Token {
             text = "letstar";
             currentChar = nextChar();
         }
+        else if (text.compareTo("null?") == 0) {
+            text = "null";
+        }
 
         // Is it a reserved word or an identifier?
         type = (RESERVED_WORDS.contains(text))
@@ -40,6 +43,9 @@ public class WordToken extends Token {
 
         if (text.compareTo("letstar") == 0) {
             text = "let*";
+        }
+        else if (text.compareTo("null") == 0) {
+            text = "null?";
         }
     }
 }
