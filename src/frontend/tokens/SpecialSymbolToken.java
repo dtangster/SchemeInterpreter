@@ -21,16 +21,13 @@ public class SpecialSymbolToken extends Token {
         switch (currentChar) {
             case '(':
             case ')':
+            case '\'':
             case '+':
             case '-':
             case '*':
             case '/':
                 nextChar();  // consume character
                 break;
-
-            //TODO: This case is not right. Just trying to parse file without errors.
-            case '\'':
-                while (nextChar() != ' ') {}
 
             // < or <=
             case '<': {

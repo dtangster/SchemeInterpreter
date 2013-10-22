@@ -6,11 +6,12 @@ import intermediate.IntermediateCode;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Scheme {
     private Parser parser;
     private Source source;
-    private IntermediateCode intermediateCode;
+    private ArrayList<IntermediateCode> intermediateCodes;
     private SymbolTableStack symbolTableStack;
     private Backend backend;
 
@@ -23,9 +24,9 @@ public class Scheme {
             parser.parse();
             source.close();
 
-            intermediateCode = parser.getICode();
+            intermediateCodes = parser.getICodes();
             symbolTableStack = parser.getSymTabStack();
-            backend.process(intermediateCode, symbolTableStack);
+            backend.process(intermediateCodes, symbolTableStack);
         } catch (IOException e) {
             e.printStackTrace();
         }

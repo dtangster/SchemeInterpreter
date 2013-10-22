@@ -4,20 +4,25 @@ import intermediate.IntermediateCode;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Parser {
     protected SymbolTableStack symbolTableStack;
-    protected IntermediateCode intermediateCode;
+    protected ArrayList<IntermediateCode> topLevelLists;
     protected Scanner scanner;
 
     public Parser(Scanner scanner) {
         symbolTableStack = new SymbolTableStack();
-        intermediateCode = new IntermediateCode();
+        topLevelLists = new ArrayList<IntermediateCode>();
         this.scanner = scanner;
     }
 
     public void parse() throws IOException {
-        parse(intermediateCode);
+        while (scanner.peekChar() != Source.EOF) {
+            IntermediateCode newNode = new IntermediateCode();
+            topLevelLists.add(newNode);
+            parse(newNode);
+        }
     }
 
     public void parse(IntermediateCode root) throws IOException {
@@ -65,8 +70,8 @@ public class Parser {
         return scanner;
     }
 
-    public IntermediateCode getICode() {
-        return intermediateCode;
+    public ArrayList<IntermediateCode> getICodes() {
+        return topLevelLists;
     }
 
     public SymbolTableStack getSymTabStack() {

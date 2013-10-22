@@ -32,7 +32,7 @@ public class Source {
         // Need to read the next line?
         if (lineIndex >= line.length()) {
             if (readLine()) {
-                return nextChar();
+                return currentChar();
             }
             else {
                 return EOF;

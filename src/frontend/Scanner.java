@@ -2,6 +2,7 @@ package frontend;
 
 import frontend.tokens.NumberToken;
 import frontend.tokens.SpecialSymbolToken;
+import frontend.tokens.SymbolToken;
 import frontend.tokens.WordToken;
 
 import java.io.IOException;
@@ -33,6 +34,9 @@ public class Scanner {
         else if (TokenType.SPECIAL_SYMBOLS
                 .containsKey(Character.toString(currentChar))) {
             token = new SpecialSymbolToken(source);
+        }
+        else {
+            token = new SymbolToken(source);
         }
 
         return token;
@@ -70,5 +74,9 @@ public class Scanner {
 
     public char nextChar() throws IOException {
         return source.nextChar();
+    }
+
+    public char peekChar() throws IOException {
+        return source.peekChar();
     }
 }

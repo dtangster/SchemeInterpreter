@@ -4,12 +4,15 @@ import intermediate.IntermediateCode;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Backend {
-    public void process(IntermediateCode intermediateCode,
+    public void process(ArrayList<IntermediateCode> intermediateCodes,
                         SymbolTableStack symbolTableStack) throws IOException
     {
-        printParseTree(intermediateCode);
+        for (IntermediateCode iCode : intermediateCodes) {
+            printParseTree(iCode);
+        }
     }
 
     public boolean printParseTree(IntermediateCode intermediateCode) {
@@ -21,7 +24,7 @@ public class Backend {
             //System.out.println(intermediateCode.getText() + '\t' + intermediateCode.getType());
             System.out.println(intermediateCode.getText());
         }
-        else {
+        else if (intermediateCode.getCar() != null || intermediateCode.getCdr() != null) {
             System.out.print('(');
         }
 
