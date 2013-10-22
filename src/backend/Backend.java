@@ -22,8 +22,12 @@ public class Backend {
         }
 
         if (intermediateCode.getText() != null) {
-            //System.out.println(intermediateCode.getText() + '\t' + intermediateCode.getType());
-            System.out.print(intermediateCode.getText() + ' ');
+            if (intermediateCode.getText().compareTo("'") == 0) {
+                System.out.print(intermediateCode.getText());
+            }
+            else {
+                System.out.print(intermediateCode.getText() + ' ');
+            }
         }
         else if (intermediateCode.getCar() != null) {
             System.out.print('(');
