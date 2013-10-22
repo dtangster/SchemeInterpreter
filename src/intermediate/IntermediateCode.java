@@ -3,6 +3,7 @@ package intermediate;
 public class IntermediateCode {
     private String text;
     private String type;
+    private IntermediateCode parent;
     private IntermediateCode car;
     private IntermediateCode cdr;
 
@@ -27,6 +28,14 @@ public class IntermediateCode {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public IntermediateCode getParent() {
+        return parent;
+    }
+
+    public void setParent(IntermediateCode parent) {
+        this.parent = parent;
     }
 
     public IntermediateCode getCar() {

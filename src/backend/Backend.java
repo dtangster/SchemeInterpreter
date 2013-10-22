@@ -12,9 +12,9 @@ public class Backend {
         printParseTree(intermediateCode);
     }
 
-    public void printParseTree(IntermediateCode intermediateCode) {
+    public boolean printParseTree(IntermediateCode intermediateCode) {
         if (intermediateCode == null) {
-            return;
+            return false;
         }
 
         if (intermediateCode.getText() != null) {
@@ -26,6 +26,11 @@ public class Backend {
         }
 
         printParseTree(intermediateCode.getCar());
-        printParseTree(intermediateCode.getCdr());
+
+        if (!printParseTree(intermediateCode.getCdr())) {
+            System.out.print(')');
+        }
+
+        return true;
     }
 }

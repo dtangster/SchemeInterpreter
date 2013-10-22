@@ -22,23 +22,37 @@ public class Parser {
 
     public void parse(IntermediateCode root) throws IOException {
         try {
+            IntermediateCode newNode;
             Token token = nextToken();
 
             switch (token.getType()) {
                 case LEFT_PAREN:
-                    root.setCar(new IntermediateCode());
-                    parse(root.getCar());
+                    newNode = new IntermediateCode();
+                    newNode.setParent(root);
+                    root.setCar(newNode);
+                    parse(newNode);
+                    token = currentToken();
+
+                    if (token.getType() == TokenType.RIGHT_PAREN) {
+                        newNode = new IntermediateCode();
+                        newNode.setParent(root);
+                        root.setCdr(newNode);
+                        parse(newNode);
+                    }
+
                     break;
                 case RIGHT_PAREN:
-                    parse(root);
+                    root.getParent().setCdr(null);
                     break;
                 case END_OF_FILE:
                     break;
                 default:
+                    newNode = new IntermediateCode();
+                    newNode.setParent(root);
                     root.setText(token.getText());
                     root.setType(token.getType().getText());
-                    root.setCdr(new IntermediateCode());
-                    parse(root.getCdr());
+                    root.setCdr(newNode);
+                    parse(newNode);
                     break;
             }
         }
