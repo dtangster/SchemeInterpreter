@@ -49,6 +49,7 @@ public class Scanner {
             // Start of a comment?
             if (currentChar == ';') {
                 source.readLine();
+                System.out.println(source);
                 currentChar = source.currentChar();
             }
 
