@@ -1,6 +1,8 @@
 package backend;
 
 import intermediate.IntermediateCode;
+import intermediate.SymbolTable;
+import intermediate.SymbolTableEntry;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;
@@ -10,10 +12,13 @@ public class Backend {
     public void process(ArrayList<IntermediateCode> intermediateCodes,
                         SymbolTableStack symbolTableStack) throws IOException
     {
-        System.out.println("\n----------Printing List Tree---------\n");
+        System.out.println("\n----------Printing Parse Tree---------\n");
         for (IntermediateCode iCode : intermediateCodes) {
             printParseTree(iCode);
         }
+
+        System.out.println("\n----------Printing Symbol Table---------\n");
+        printSymbolTableStack(symbolTableStack);
     }
 
     public boolean printParseTree(IntermediateCode intermediateCode) {
@@ -40,5 +45,13 @@ public class Backend {
         }
 
         return true;
+    }
+
+    public void printSymbolTableStack(SymbolTableStack symbolTableStack) {
+        for (SymbolTable table : symbolTableStack) {
+            for (SymbolTableEntry entry : table.values()) {
+                System.out.println(entry);
+            }
+        }
     }
 }

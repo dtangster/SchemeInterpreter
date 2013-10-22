@@ -6,6 +6,7 @@ import java.util.Hashtable;
 public enum TokenType {
     // Reserved words
     AND, COND, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR("let*"), NOT, OR, CONS,
+    NULL("null?"),
 
     // Special Symbols
     QUOTE("'"), EQUALS("="), LESS_THAN("<"), LESS_EQUALS("<="), GREATER_EQUALS(">="),

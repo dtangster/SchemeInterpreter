@@ -27,4 +27,8 @@ public class SymbolTableEntry extends HashMap<Attribute, Object> {
     public Object getAttribute(Attribute key) {
         return get(key);
     }
+
+    public String toString() {
+        return name;
+    }
 }

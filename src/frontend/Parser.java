@@ -1,6 +1,8 @@
 package frontend;
 
 import intermediate.IntermediateCode;
+import intermediate.SymbolTable;
+import intermediate.SymbolTableEntry;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;
@@ -8,13 +10,17 @@ import java.util.ArrayList;
 
 public class Parser {
     protected SymbolTableStack symbolTableStack;
+    protected SymbolTable symbolTable;
     protected ArrayList<IntermediateCode> topLevelLists;
     protected Scanner scanner;
 
     public Parser(Scanner scanner) {
         symbolTableStack = new SymbolTableStack();
+        symbolTable = new SymbolTable();
         topLevelLists = new ArrayList<IntermediateCode>();
         this.scanner = scanner;
+
+        symbolTableStack.add(symbolTable);
     }
 
     public void parse() throws IOException {
@@ -56,6 +62,9 @@ public class Parser {
                     break;
                 case END_OF_FILE:
                     break;
+                case IDENTIFIER:
+                    SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
+                    symbolTable.put(token.getText(), entry);
                 default:
                     newNode = new IntermediateCode();
                     newNode.setParent(root);
