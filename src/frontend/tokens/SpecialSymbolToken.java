@@ -51,7 +51,9 @@ public class SpecialSymbolToken extends Token {
                 value = currentChar;
                 break;
             case '\'':
-                nextChar();  // consume character
+                type = QUOTE;
+                text = Character.toString(currentChar);
+                value = currentChar;
                 break;
 
             // < or <=
