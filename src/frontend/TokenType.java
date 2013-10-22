@@ -5,8 +5,7 @@ import java.util.Hashtable;
 
 public enum TokenType {
     // Reserved words
-    AND, COND, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR("let*"), NOT, OR, CONS,
-    NULL("null?"),
+    AND, COND, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR, NOT, OR, CONS, NULL,
 
     // Special Symbols
     QUOTE("'"), EQUALS("="), LESS_THAN("<"), LESS_EQUALS("<="), GREATER_EQUALS(">="),
@@ -17,7 +16,7 @@ public enum TokenType {
     IDENTIFIER, INTEGER, REAL, STRING, SYMBOL, ERROR, END_OF_FILE;
 
     private static final int FIRST_RESERVED_INDEX = AND.ordinal();
-    private static final int LAST_RESERVED_INDEX  = OR.ordinal();
+    private static final int LAST_RESERVED_INDEX  = NULL.ordinal();
 
     private static final int FIRST_SPECIAL_INDEX = QUOTE.ordinal();
     private static final int LAST_SPECIAL_INDEX  = RIGHT_PAREN.ordinal();
