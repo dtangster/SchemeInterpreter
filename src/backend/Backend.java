@@ -25,7 +25,7 @@ public class Backend {
             //System.out.println(intermediateCode.getText() + '\t' + intermediateCode.getType());
             System.out.println(intermediateCode.getText());
         }
-        else if (intermediateCode.getCar() != null || intermediateCode.getCdr() != null) {
+        else if (intermediateCode.getCar() != null) {
             System.out.print('(');
         }
 
