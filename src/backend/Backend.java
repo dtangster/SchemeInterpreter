@@ -23,7 +23,7 @@ public class Backend {
 
         if (intermediateCode.getText() != null) {
             //System.out.println(intermediateCode.getText() + '\t' + intermediateCode.getType());
-            System.out.println(intermediateCode.getText());
+            System.out.print(intermediateCode.getText() + ' ');
         }
         else if (intermediateCode.getCar() != null) {
             System.out.print('(');
@@ -32,7 +32,7 @@ public class Backend {
         printParseTree(intermediateCode.getCar());
 
         if (!printParseTree(intermediateCode.getCdr())) {
-            System.out.print(')');
+            System.out.println(')');
         }
 
         return true;
