@@ -11,13 +11,15 @@ import java.util.ArrayList;
 public class Parser {
     protected SymbolTableStack symbolTableStack;
     protected SymbolTable symbolTable;
-    protected ArrayList<IntermediateCode> topLevelLists;
+    protected ArrayList<ArrayList<IntermediateCode>> topLevelLists;
     protected Scanner scanner;
+    protected int counter = 0;
+    private boolean initial = true;
 
     public Parser(Scanner scanner) {
         symbolTableStack = new SymbolTableStack();
         symbolTable = new SymbolTable();
-        topLevelLists = new ArrayList<IntermediateCode>();
+        topLevelLists = new ArrayList<ArrayList<IntermediateCode>>();
         this.scanner = scanner;
 
         symbolTableStack.add(symbolTable);
@@ -27,13 +29,21 @@ public class Parser {
         System.out.println("\n----------Printing Tokens---------\n");
 
         while (scanner.peekChar() != Source.EOF) {
-            IntermediateCode newNode = parseList();
-            topLevelLists.add(newNode);
+            ArrayList<IntermediateCode> newList = new ArrayList<IntermediateCode>();
+            newList.add(parseList());
+            topLevelLists.add(newList);
         }
     }
 
     public IntermediateCode parseList() {
         IntermediateCode newNode = null;
+
+        if(!initial && counter == 0)
+        {
+            initial = true;
+            return null;
+        }
+        initial = false;
 
         try {
             Token token = nextToken(); // Consume (
@@ -45,11 +55,13 @@ public class Parser {
 
             switch (token.getType()) {
                 case LEFT_PAREN:
+                    counter++;
                     newNode = new IntermediateCode();
                     newNode.setCar(parseList());
                     newNode.setCdr(parseList());
                     break;
                 case RIGHT_PAREN:
+                    counter--;
                     return null;
                 case END_OF_FILE:
                     break;
@@ -74,7 +86,7 @@ public class Parser {
         return scanner;
     }
 
-    public ArrayList<IntermediateCode> getICodes() {
+    public ArrayList<ArrayList<IntermediateCode>> getICodes() {
         return topLevelLists;
     }
 

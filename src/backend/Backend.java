@@ -9,13 +9,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Backend {
-    public void process(ArrayList<IntermediateCode> intermediateCodes,
+    public void process(ArrayList<ArrayList<IntermediateCode>> intermediateCodes,
                         SymbolTableStack symbolTableStack) throws IOException
     {
         System.out.println("\n----------Printing Parse Tree---------\n");
-        for (IntermediateCode iCode : intermediateCodes) {
+        for(ArrayList<IntermediateCode> ar : intermediateCodes)
+        {
+        for (IntermediateCode iCode : ar)
+        {
             printParseTree(iCode);
         }
+            System.out.println();
+        }
+
 
         System.out.println("\n----------Printing Symbol Table---------\n");
         printSymbolTableStack(symbolTableStack);
