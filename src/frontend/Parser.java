@@ -49,15 +49,10 @@ public class Parser {
                     newNode.setParent(root);
                     root.setCar(newNode);
                     parse(newNode);
-                    token = currentToken();
-
-                    if (token.getType() == TokenType.RIGHT_PAREN) {
-                        newNode = new IntermediateCode();
-                        newNode.setParent(root);
-                        root.setCdr(newNode);
-                        parse(newNode);
-                    }
-
+                    newNode = new IntermediateCode();
+                    newNode.setParent(root);
+                    root.setCdr(newNode);
+                    parse(newNode);
                     break;
                 case RIGHT_PAREN:
                     root.getParent().setCdr(null);
