@@ -21,9 +21,9 @@ public class Backend {
         printSymbolTableStack(symbolTableStack);
     }
 
-    public boolean printParseTree(IntermediateCode intermediateCode) {
+    public void printParseTree(IntermediateCode intermediateCode) {
         if (intermediateCode == null) {
-            return false;
+            return;
         }
 
         if (intermediateCode.getText() != null) {
@@ -34,17 +34,16 @@ public class Backend {
                 System.out.print(intermediateCode.getText() + ' ');
             }
         }
-        else if (intermediateCode.getCar() != null) {
+        else {
             System.out.print('(');
         }
 
         printParseTree(intermediateCode.getCar());
+        printParseTree(intermediateCode.getCdr());
 
-        if (!printParseTree(intermediateCode.getCdr())) {
+        if (intermediateCode.getCdr() == null) {
             System.out.println(')');
         }
-
-        return true;
     }
 
     public void printSymbolTableStack(SymbolTableStack symbolTableStack) {

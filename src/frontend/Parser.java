@@ -27,16 +27,16 @@ public class Parser {
         System.out.println("\n----------Printing Tokens---------\n");
 
         while (scanner.peekChar() != Source.EOF) {
-            IntermediateCode newNode = new IntermediateCode();
+            IntermediateCode newNode = parseList();
             topLevelLists.add(newNode);
-            parse(newNode);
         }
     }
 
-    public void parse(IntermediateCode root) throws IOException {
+    public IntermediateCode parseList() {
+        IntermediateCode newNode = null;
+
         try {
-            IntermediateCode newNode;
-            Token token = nextToken();
+            Token token = nextToken(); // Consume (
             System.out.println(token);
 
             if (scanner.getPosition() == 0) {
@@ -46,22 +46,11 @@ public class Parser {
             switch (token.getType()) {
                 case LEFT_PAREN:
                     newNode = new IntermediateCode();
-                    newNode.setParent(root);
-                    root.setCar(newNode);
-                    parse(newNode);
-                    token = currentToken();
-
-                    if (token.getType() == TokenType.RIGHT_PAREN) {
-                        newNode = new IntermediateCode();
-                        newNode.setParent(root);
-                        root.setCdr(newNode);
-                        parse(newNode);
-                    }
-
+                    newNode.setCar(parseList());
+                    newNode.setCdr(parseList());
                     break;
                 case RIGHT_PAREN:
-                    root.getParent().setCdr(null);
-                    break;
+                    return null;
                 case END_OF_FILE:
                     break;
                 case IDENTIFIER:
@@ -69,17 +58,16 @@ public class Parser {
                     symbolTable.put(token.getText(), entry);
                 default:
                     newNode = new IntermediateCode();
-                    newNode.setParent(root);
-                    root.setText(token.getText());
-                    root.setType(token.getType());
-                    root.setCdr(newNode);
-                    parse(newNode);
-                    break;
+                    newNode.setText(token.getText());
+                    newNode.setType(token.getType());
+                    newNode.setCdr(parseList());
             }
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+
+        return newNode;
     }
 
     public Scanner getScanner() {
