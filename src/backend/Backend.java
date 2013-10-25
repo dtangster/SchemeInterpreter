@@ -43,7 +43,7 @@ public class Backend {
         printParseTree(intermediateCode.getCar());
         printParseTree(intermediateCode.getCdr());
 
-        if (intermediateCode.getCar() == null && intermediateCode.getCdr()==null) {
+        if (intermediateCode.getCdr() == null) {
             System.out.println(')');
         }
     }
