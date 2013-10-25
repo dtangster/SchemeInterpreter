@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Parser {
     protected SymbolTableStack symbolTableStack;
     protected SymbolTable symbolTable;
-    protected ArrayList<ArrayList<IntermediateCode>> topLevelLists;
+    protected ArrayList<IntermediateCode> topLevelLists;
     protected Scanner scanner;
     protected int counter = 0;
     private boolean initial = true;
@@ -19,7 +19,7 @@ public class Parser {
     public Parser(Scanner scanner) {
         symbolTableStack = new SymbolTableStack();
         symbolTable = new SymbolTable();
-        topLevelLists = new ArrayList<ArrayList<IntermediateCode>>();
+        topLevelLists = new ArrayList<IntermediateCode>();
         this.scanner = scanner;
 
         symbolTableStack.add(symbolTable);
@@ -29,8 +29,7 @@ public class Parser {
         System.out.println("\n----------Printing Tokens---------\n");
 
         while (scanner.peekChar() != Source.EOF) {
-            ArrayList<IntermediateCode> newList = new ArrayList<IntermediateCode>();
-            newList.add(parseList());
+            IntermediateCode newList = parseList().getCar();
             topLevelLists.add(newList);
         }
     }
@@ -86,7 +85,7 @@ public class Parser {
         return scanner;
     }
 
-    public ArrayList<ArrayList<IntermediateCode>> getICodes() {
+    public ArrayList<IntermediateCode> getICodes() {
         return topLevelLists;
     }
 

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Scheme {
     private Parser parser;
     private Source source;
-    private ArrayList<ArrayList<IntermediateCode>> intermediateCodes;
+    private ArrayList<IntermediateCode> intermediateCodes;
     private SymbolTableStack symbolTableStack;
     private Backend backend;
 
