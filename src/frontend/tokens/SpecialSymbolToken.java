@@ -27,7 +27,7 @@ public class SpecialSymbolToken extends Token {
             case '*':
             case '/':
             case '\'':
-                nextChar();
+               nextChar();
                 break;
 
             // < or <=

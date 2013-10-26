@@ -7,6 +7,7 @@ import java.io.IOException;
 public class Source {
     public static final char EOL = '\n';      // End-of-Line character
     public static final char EOF = (char) 0;  // End-of-File character
+    public static final char OPERATOR = '+';
 
     private BufferedReader reader;
     private String line;

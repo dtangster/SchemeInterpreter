@@ -8,6 +8,7 @@ import frontend.tokens.WordToken;
 import java.io.IOException;
 
 import static frontend.Source.EOF;
+import static frontend.Source.OPERATOR;
 
 public class Scanner {
     private Source source;
@@ -24,6 +25,9 @@ public class Scanner {
 
         if (currentChar == EOF) {
             token = new EofToken(source);
+        }
+        else if (currentChar == OPERATOR){
+            token =  new OperatorToken(source);
         }
         else if (Character.isLetter(currentChar)) {
             token = new WordToken(source);

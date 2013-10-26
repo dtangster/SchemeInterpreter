@@ -67,6 +67,9 @@ public class Parser {
                 case IDENTIFIER:
                     SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
                     symbolTable.put(token.getText(), entry);
+                case OPERATOR:
+                    SymbolTableEntry ent = new SymbolTableEntry(token.getText(), symbolTable);
+                    symbolTable.put(token.getText(), ent);
                 default:
                     newNode = new IntermediateCode();
                     newNode.setText(token.getText());

@@ -14,7 +14,7 @@ public class Backend {
     {
         System.out.println("\n----------Printing Parse Tree---------\n");
         for(IntermediateCode iCode : intermediateCodes) {
-            printParseTree(iCode);
+            printParseTree(iCode, "", false);
             System.out.println();
         }
 
@@ -23,28 +23,46 @@ public class Backend {
         printSymbolTableStack(symbolTableStack);
     }
 
-    public void printParseTree(IntermediateCode intermediateCode) {
+
+    public void printParseTree(IntermediateCode intermediateCode, String space, boolean prevQuote) {
         if (intermediateCode == null) {
             return;
         }
+        boolean pQuote = prevQuote;
 
         if (intermediateCode.getText() != null) {
             if (intermediateCode.getText().compareTo("'") == 0) {
+                System.out.print("\n");
+                System.out.print(space);
                 System.out.print(intermediateCode.getText());
-            }
-            else {
+                pQuote = true;
+            }else {
+                if (intermediateCode.getText().equalsIgnoreCase("define")){
+                    if (pQuote) {
+                        pQuote = false;
+                    }else{
+                        System.out.print("\n" + space);
+                    }
+                    space = space + "  ";
+                    System.out.print("(");
+                }
                 System.out.print(intermediateCode.getText() + ' ');
             }
-        }
-        else {
+        }else {
+            if (pQuote) {
+                pQuote = false;
+            }else{
+                System.out.print("\n" + space);
+            }
+            space = space + "  ";
             System.out.print('(');
         }
 
-        printParseTree(intermediateCode.getCar());
-        printParseTree(intermediateCode.getCdr());
+        printParseTree(intermediateCode.getCar(), space, pQuote);
+        printParseTree(intermediateCode.getCdr(), space, pQuote);
 
         if (intermediateCode.getCdr() == null) {
-            System.out.println(')');
+            System.out.print(")");
         }
     }
 
@@ -54,5 +72,4 @@ public class Backend {
                 System.out.println(entry);
             }
         }
-    }
-}
+    }   }
