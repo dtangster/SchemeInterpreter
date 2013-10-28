@@ -64,13 +64,11 @@ public class Parser {
                     return null;
                 case END_OF_FILE:
                     break;
+                case SYMBOL:
+                case OPERATOR:
                 case IDENTIFIER:
                     SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
                     symbolTable.put(token.getText(), entry);
-                case SYMBOL:
-                case OPERATOR:
-                    SymbolTableEntry ent = new SymbolTableEntry(token.getText(), symbolTable);
-                    symbolTable.put(token.getText(), ent);
                 default:
                     newNode = new IntermediateCode();
                     newNode.setText(token.getText());
