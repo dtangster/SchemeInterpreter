@@ -27,6 +27,9 @@ public class WordToken extends Token {
         }
 
         text = textBuffer.toString();
-        type = TokenType.valueOf(text.toUpperCase());
+
+        if ((type = TokenType.ALL_SYMBOLS.get(text)) == null) {
+            type = TokenType.SYMBOL;
+        }
     }
 }
