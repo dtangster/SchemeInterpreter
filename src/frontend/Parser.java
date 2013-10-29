@@ -62,7 +62,7 @@ public class Parser {
                     counter--;
                 case END_OF_FILE:
                     break;
-                case SYMBOL:
+                case REGULAR_SYMBOL:
                     SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
                     symbolTable.put(token.getText(), entry);
                 default:

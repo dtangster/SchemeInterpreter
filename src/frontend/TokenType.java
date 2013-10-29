@@ -14,7 +14,7 @@ public enum TokenType {
     EQUALS("="), LESS_THAN("<"), LESS_EQUALS("<="), GREATER_EQUALS(">="), GREATER_THAN(">"),
 
     // Others (Does not go into symbol table)
-    INTEGER, REAL, STRING, SYMBOL,
+    INTEGER, REAL, STRING, RESERVED_SYMBOL, REGULAR_SYMBOL,
 
     // Error handling
     ERROR, END_OF_FILE;

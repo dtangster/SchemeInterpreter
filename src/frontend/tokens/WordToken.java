@@ -6,8 +6,6 @@ import frontend.TokenType;
 
 import java.io.IOException;
 
-import static frontend.TokenType.RESERVED_WORDS;
-
 public class WordToken extends Token {
     public WordToken(Source source) throws IOException {
         super(source);
@@ -27,9 +25,23 @@ public class WordToken extends Token {
         }
 
         text = textBuffer.toString();
+        type = TokenType.RESERVED_WORDS.get(text);
 
-        if ((type = TokenType.ALL_SYMBOLS.get(text)) == null) {
-            type = TokenType.SYMBOL;
+        peekChar();
+
+        if (text.equals("let") && currentChar() == '*') {
+            text = "let*";
+            type = TokenType.ALL_SYMBOLS.get(text);
+        }
+        else if (text.equals("null") && currentChar() == '?') {
+            text = "null?";
+            type = TokenType.ALL_SYMBOLS.get(text);
+        }
+        else if (type == null) {
+            type = TokenType.REGULAR_SYMBOL;
+        }
+        else {
+            // Error here. This is for Assignment 6.
         }
     }
 }
