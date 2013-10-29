@@ -27,8 +27,6 @@ public class WordToken extends Token {
         text = textBuffer.toString();
         type = TokenType.RESERVED_WORDS.get(text);
 
-        peekChar();
-
         if (text.equals("let") && currentChar() == '*') {
             text = "let*";
             type = TokenType.ALL_SYMBOLS.get(text);
