@@ -2,11 +2,9 @@ package frontend.tokens;
 
 import frontend.Source;
 import frontend.Token;
+import frontend.TokenType;
 
 import java.io.IOException;
-
-import static frontend.TokenType.SPECIAL_SYMBOLS;
-
 
 public class SpecialSymbolToken extends Token {
     public SpecialSymbolToken(Source source) throws IOException {
@@ -19,45 +17,13 @@ public class SpecialSymbolToken extends Token {
         text = Character.toString(currentChar);
         type = null;
 
-        switch (currentChar) {
-            case '(':
-            case ')':
-            case '+':
-            case '-':
-            case '*':
-            case '/':
-            case '\'':
-               nextChar();
-                break;
-
-            // < or <=
-            case '<': {
-                currentChar = nextChar();  // consume '<';
-
-                if (currentChar == '=') {
-                    text += currentChar;
-                    nextChar();  // consume '='
-                }
-
-                break;
-            }
-
-            // > or >=
-            case '>': {
-                currentChar = nextChar();  // consume '>';
-
-                if (currentChar == '=') {
-                    text += currentChar;
-                    nextChar();  // consume '='
-                }
-
-                break;
-            }
+        if (TokenType.RESERVED_SYMBOLS.containsKey(text)) {
+            type = TokenType.RESERVED_SYMBOLS.get(text);
+            nextChar();
         }
-
-        // Set the type if it wasn't an error.
-        if (type == null) {
-            type = SPECIAL_SYMBOLS.get(text);
+        else if (TokenType.REGULAR_SYMBOLS.containsKey(text)) {
+            type = TokenType.REGULAR_SYMBOLS.get(text);
+            nextChar();
         }
     }
 }

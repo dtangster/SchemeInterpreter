@@ -6,7 +6,6 @@ import frontend.TokenType;
 
 import java.io.IOException;
 
-import static frontend.TokenType.IDENTIFIER;
 import static frontend.TokenType.RESERVED_WORDS;
 
 public class WordToken extends Token {
@@ -28,24 +27,6 @@ public class WordToken extends Token {
         }
 
         text = textBuffer.toString();
-        if (text.compareTo("let") == 0 && currentChar() == '*') {
-            text = "letstar";
-            currentChar = nextChar();
-        }
-        else if (text.compareTo("null?") == 0) {
-            text = "null";
-        }
-
-        // Is it a reserved word or an identifier?
-        type = (RESERVED_WORDS.contains(text))
-                ? TokenType.valueOf(text.toUpperCase())  // reserved word
-                : IDENTIFIER;                                  // identifier
-
-        if (text.compareTo("letstar") == 0) {
-            text = "let*";
-        }
-        else if (text.compareTo("null") == 0) {
-            text = "null?";
-        }
+        type = TokenType.valueOf(text.toUpperCase());
     }
 }

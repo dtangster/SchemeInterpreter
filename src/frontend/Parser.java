@@ -37,8 +37,7 @@ public class Parser {
     public IntermediateCode parseList() {
         IntermediateCode newNode = null;
 
-        if(!initial && counter == 0)
-        {
+        if(!initial && counter == 0) {
             initial = true;
             return null;
         }
@@ -61,12 +60,9 @@ public class Parser {
                     break;
                 case RIGHT_PAREN:
                     counter--;
-                    return null;
                 case END_OF_FILE:
                     break;
                 case SYMBOL:
-                case OPERATOR:
-                case IDENTIFIER:
                     SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
                     symbolTable.put(token.getText(), entry);
                 default:

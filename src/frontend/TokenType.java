@@ -1,24 +1,32 @@
 package frontend;
 
-import java.util.HashSet;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 public enum TokenType {
-    // Reserved words
-    AND, COND, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR, NOT, OR, CONS, NULL, MAP,
+    // Reserved words (Does not go into symbol table)
+    AND, COND, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR("let*"), NOT, OR, CONS,
+    NULL("null?"), MAP,
 
-    // Special Symbols
-    QUOTE("'"), EQUALS("="), LESS_THAN("<"), LESS_EQUALS("<="), GREATER_EQUALS(">="), GREATER_THAN(">"),
-    LEFT_PAREN("("), RIGHT_PAREN(")"),
+    // Reserved special symbols (Does not go into symbol table)
+    QUOTE("'"), LEFT_PAREN("("), RIGHT_PAREN(")"),
 
-    // Others
-    IDENTIFIER, INTEGER, REAL, STRING, SYMBOL, ERROR, END_OF_FILE, OPERATOR;
+    // Regular Symbols (Goes into symbol table)
+    EQUALS("="), LESS_THAN("<"), LESS_EQUALS("<="), GREATER_EQUALS(">="), GREATER_THAN(">"),
 
-    private static final int FIRST_RESERVED_INDEX = AND.ordinal();
-    private static final int LAST_RESERVED_INDEX  = NULL.ordinal();
+    // Others (Does not go into symbol table)
+    INTEGER, REAL, STRING, SYMBOL,
 
-    private static final int FIRST_SPECIAL_INDEX = QUOTE.ordinal();
-    private static final int LAST_SPECIAL_INDEX  = RIGHT_PAREN.ordinal();
+    // Error handling
+    ERROR, END_OF_FILE;
+
+    private static final int FIRST_RESERVED_WORD_INDEX = AND.ordinal();
+    private static final int LAST_RESERVED_WORD_INDEX = MAP.ordinal();
+
+    private static final int FIRST_RESERVED_SYMBOL_INDEX = QUOTE.ordinal();
+    private static final int LAST_RESERVED_SYMBOL_INDEX  = RIGHT_PAREN.ordinal();
+
+    private static final int FIRST_REGULAR_SYMBOL_INDEX = EQUALS.ordinal();
+    private static final int LAST_REGULAR_SYMBOL_INDEX = GREATER_THAN.ordinal();
 
     private String text;  // token text
 
@@ -34,23 +42,28 @@ public enum TokenType {
         return text;
     }
 
-    // Set of lower-cased Scheme reserved word text strings.
-    public static HashSet<String> RESERVED_WORDS = new HashSet<String>();
+    public static HashMap<String, TokenType> ALL_SYMBOLS = new HashMap<String, TokenType>();
+    public static HashMap<String, TokenType> RESERVED_WORDS = new HashMap<String, TokenType>();
+    public static HashMap<String, TokenType> RESERVED_SYMBOLS = new HashMap<String, TokenType>();
+    public static HashMap<String, TokenType> REGULAR_SYMBOLS = new HashMap<String, TokenType>();
     static {
         TokenType values[] = TokenType.values();
-        for (int i = FIRST_RESERVED_INDEX; i <= LAST_RESERVED_INDEX; ++i) {
-            RESERVED_WORDS.add(values[i].getText().toLowerCase());
+        for (int i = FIRST_RESERVED_WORD_INDEX; i <= LAST_RESERVED_WORD_INDEX; ++i) {
+            RESERVED_WORDS.put(values[i].getText().toLowerCase(), values[i]);
         }
-    }
 
-    // Hash table of Scheme special symbols.  Each special symbol's text
-    // is the key to its Scheme token type.
-    public static Hashtable<String, TokenType> SPECIAL_SYMBOLS =
-            new Hashtable<String, TokenType>();
-    static {
-        TokenType values[] = TokenType.values();
-        for (int i = FIRST_SPECIAL_INDEX; i <= LAST_SPECIAL_INDEX; ++i) {
-            SPECIAL_SYMBOLS.put(values[i].getText(), values[i]);
+        values = TokenType.values();
+        for (int i = FIRST_RESERVED_SYMBOL_INDEX; i <= LAST_RESERVED_SYMBOL_INDEX; ++i) {
+            RESERVED_SYMBOLS.put(values[i].getText().toLowerCase(), values[i]);
         }
+
+        values = TokenType.values();
+        for (int i = FIRST_REGULAR_SYMBOL_INDEX; i <= LAST_REGULAR_SYMBOL_INDEX; ++i) {
+            REGULAR_SYMBOLS.put(values[i].getText(), values[i]);
+        }
+
+        ALL_SYMBOLS.putAll(RESERVED_WORDS);
+        ALL_SYMBOLS.putAll(RESERVED_SYMBOLS);
+        ALL_SYMBOLS.putAll(REGULAR_SYMBOLS);
     }
 }
