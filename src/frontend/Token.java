@@ -53,8 +53,4 @@ public class Token {
     protected char peekChar() throws IOException {
         return source.peekChar();
     }
-
-    public String toString() {
-        return '\t' + text + '\t' + type;
-    }
 }

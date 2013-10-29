@@ -45,7 +45,21 @@ public class Parser {
 
         try {
             Token token = nextToken(); // Consume (
-            System.out.println(token);
+            System.out.print("\t" + token.getText() + "\t");
+
+            if (TokenType.RESERVED_WORDS.containsKey(token.getText())
+                    || TokenType.RESERVED_SYMBOLS.containsKey(token.getText()))
+            {
+                System.out.println("Reserved Word");
+            }
+            else if (token.getType() == TokenType.REGULAR_SYMBOL) {
+                System.out.println("Symbol");
+            }
+            else if (token.getType() == TokenType.INTEGER
+                    || token.getType() == TokenType.REAL)
+            {
+                System.out.println("Number");
+            }
 
             if (scanner.getPosition() == 0) {
                 System.out.println(scanner);
