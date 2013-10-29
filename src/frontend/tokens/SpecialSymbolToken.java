@@ -21,8 +21,8 @@ public class SpecialSymbolToken extends Token {
             type = TokenType.RESERVED_SYMBOLS.get(text);
             nextChar();
         }
-        else if (TokenType.REGULAR_SYMBOLS.containsKey(text)) {
-            type = TokenType.REGULAR_SYMBOLS.get(text);
+        else {
+            type = TokenType.REGULAR_SYMBOL;
             nextChar();
         }
     }

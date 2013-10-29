@@ -30,11 +30,8 @@ public class Scanner {
         else if (Character.isDigit(currentChar)) {
             token = new NumberToken(source);
         }
-        else if (TokenType.ALL_SYMBOLS.containsKey(Character.toString(currentChar))) {
-            token = new SpecialSymbolToken(source);
-        }
         else {
-            // Error here for Assignment #6
+            token = new SpecialSymbolToken(source);
         }
 
         return token;
