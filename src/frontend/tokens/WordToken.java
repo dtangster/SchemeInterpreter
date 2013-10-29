@@ -30,10 +30,12 @@ public class WordToken extends Token {
         if (text.equals("let") && currentChar() == '*') {
             text = "let*";
             type = TokenType.ALL_SYMBOLS.get(text);
+            nextChar();
         }
         else if (text.equals("null") && currentChar() == '?') {
             text = "null?";
             type = TokenType.ALL_SYMBOLS.get(text);
+            nextChar();
         }
         else if (type == null) {
             type = TokenType.REGULAR_SYMBOL;
