@@ -10,10 +10,6 @@ public class SymbolTable extends TreeMap<String, SymbolTableEntry> {
         nestingLevel = 0;
     }
 
-    public SymbolTable(int nestingLevel) {
-        this.nestingLevel = nestingLevel;
-    }
-
     public SymbolTable getPredecessor() {
         return predecessor;
     }

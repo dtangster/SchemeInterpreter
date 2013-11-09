@@ -18,19 +18,18 @@ public class Parser {
 
     public Parser(Scanner scanner) {
         symbolTableStack = new SymbolTableStack();
-        symbolTable = new SymbolTable();
         topLevelLists = new ArrayList<IntermediateCode>();
         this.scanner = scanner;
-
-        symbolTableStack.add(symbolTable);
     }
 
     public void parse() throws IOException {
         System.out.println("\n----------Printing Tokens---------\n");
 
         while (scanner.peekChar() != Source.EOF) {
-            IntermediateCode newList = parseList().getCar();
-            topLevelLists.add(newList);
+            symbolTable = new SymbolTable();
+            symbolTableStack.push(symbolTable);
+            IntermediateCode root = parseList().getCar();
+            topLevelLists.add(root);
         }
     }
 
