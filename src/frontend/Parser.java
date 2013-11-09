@@ -1,6 +1,5 @@
 package frontend;
 
-import frontend.parsers.*;
 import intermediate.IntermediateCode;
 import intermediate.SymbolTable;
 import intermediate.SymbolTableEntry;
@@ -56,8 +55,8 @@ public class Parser {
 
             switch (token.getType()) {
                 case LEFT_PAREN:
-                    rootNode.setCar(parse());
-                    rootNode.setCdr(parse());
+                    rootNode.setCar(parseList());
+                    rootNode.setCdr(parseList());
                     break;
                 case DEFINE:
                     newNode = new IntermediateCode();
@@ -71,7 +70,7 @@ public class Parser {
                     symbol = new SymbolTableEntry(token.getText(), symbolTable);
                     symbolTable.put(token.getText(), symbol);
                     token = nextToken(); // Consume identifier
-                    newNode.setCdr(parse());
+                    newNode.setCdr(parseList());
                     break;
                 case LAMBDA:
                     newNode = new IntermediateCode();
@@ -97,14 +96,14 @@ public class Parser {
                     }
 
                     token = nextToken(); // Consume )
-                    rootNode.getCdr().setCdr(parse());
+                    rootNode.getCdr().setCdr(parseList());
                     break;
                 case LET:
                     newNode = new IntermediateCode();
                     newNode.setText(token.getText());
                     rootNode.setCar(newNode);
                     token = nextToken(); // Consume let
-                    rootNode.setCdr(parse());
+                    rootNode.setCdr(parseList());
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
