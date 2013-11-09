@@ -3,12 +3,13 @@ package frontend.parsers;
 import frontend.Parser;
 import frontend.Scanner;
 import intermediate.IntermediateCode;
+import intermediate.SymbolTableStack;
 
 import java.io.IOException;
 
 public class LetParser extends Parser {
-    public LetParser(Scanner scanner) {
-        super(scanner);
+    public LetParser(SymbolTableStack symbolTableStack, Scanner scanner) {
+        super(symbolTableStack, scanner);
     }
 
     @Override

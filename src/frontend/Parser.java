@@ -18,8 +18,14 @@ public class Parser {
     private boolean initial = true;
 
     public Parser(Scanner scanner) {
-        symbolTableStack = new SymbolTableStack();
         topLevelLists = new ArrayList<IntermediateCode>();
+        symbolTableStack = new SymbolTableStack();
+        this.scanner = scanner;
+    }
+
+    public Parser(SymbolTableStack symbolTableStack, Scanner scanner) {
+        topLevelLists = new ArrayList<IntermediateCode>();
+        this.symbolTableStack = symbolTableStack;
         this.scanner = scanner;
     }
 
@@ -70,17 +76,17 @@ public class Parser {
             }
 
             if (token.getType() == TokenType.DEFINE) {
-                Parser parser = new DefineParser(scanner);
+                Parser parser = new DefineParser(symbolTableStack, scanner);
                 IntermediateCode iCode = parser.parse();
                 // Do something with intermediate code here
             }
             else if (token.getType() == TokenType.LAMBDA) {
-                Parser parser = new DefineParser(scanner);
+                Parser parser = new DefineParser(symbolTableStack, scanner);
                 IntermediateCode iCode = parser.parse();
                 // Do something with intermediate code here
             }
             else if (token.getType() == TokenType.LET) {
-                Parser parser = new DefineParser(scanner);
+                Parser parser = new DefineParser(symbolTableStack, scanner);
                 IntermediateCode iCode = parser.parse();
                 // Do something with intermediate code here
             }

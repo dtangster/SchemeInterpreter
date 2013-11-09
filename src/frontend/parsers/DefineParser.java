@@ -3,12 +3,13 @@ package frontend.parsers;
 import frontend.Parser;
 import frontend.Scanner;
 import intermediate.IntermediateCode;
+import intermediate.SymbolTableStack;
 
 import java.io.IOException;
 
 public class DefineParser extends Parser {
-    public DefineParser(Scanner scanner) {
-        super(scanner);
+    public DefineParser(SymbolTableStack symbolTableStack, Scanner scanner) {
+        super(symbolTableStack, scanner);
     }
 
     @Override
