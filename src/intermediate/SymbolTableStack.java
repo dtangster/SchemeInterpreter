@@ -38,7 +38,17 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
     }
 
     public SymbolTableEntry lookup(String name) {
-        return lookupLocal(name);
+        if (!isEmpty()) {
+            SymbolTableEntry foundEntry = null;
+
+            for (int i = currentNestingLevel; i >= 0 && foundEntry == null; i--) {
+                foundEntry = get(i).lookup(name);
+            }
+
+            return foundEntry;
+        }
+
+        return null;
     }
 
     public SymbolTable pop() {
