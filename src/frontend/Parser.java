@@ -14,27 +14,29 @@ public class Parser {
     protected SymbolTable symbolTable;
     protected ArrayList<IntermediateCode> topLevelLists;
     protected Scanner scanner;
-    protected int counter = 0;
+    private  int counter = 0;
     private boolean initial = true;
 
     public Parser(Scanner scanner) {
         topLevelLists = new ArrayList<IntermediateCode>();
         symbolTableStack = new SymbolTableStack();
+        symbolTable = new SymbolTable();
+        symbolTableStack.push(symbolTable);
         this.scanner = scanner;
     }
 
     public Parser(SymbolTableStack symbolTableStack, Scanner scanner) {
-        topLevelLists = new ArrayList<IntermediateCode>();
         this.symbolTableStack = symbolTableStack;
         this.scanner = scanner;
+        topLevelLists = new ArrayList<IntermediateCode>();
+        symbolTable = new SymbolTable();
+        symbolTableStack.push(symbolTable);
     }
 
     public IntermediateCode parse() throws IOException {
         System.out.println("\n----------Printing Tokens---------\n");
 
         while (scanner.peekChar() != Source.EOF) {
-            symbolTable = new SymbolTable();
-            symbolTableStack.push(symbolTable);
             IntermediateCode root = parseList().getCar();
             topLevelLists.add(root);
         }
