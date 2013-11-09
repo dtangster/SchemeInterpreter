@@ -1,5 +1,6 @@
 package frontend;
 
+import frontend.parsers.*;
 import intermediate.IntermediateCode;
 import intermediate.SymbolTable;
 import intermediate.SymbolTableEntry;
@@ -22,7 +23,7 @@ public class Parser {
         this.scanner = scanner;
     }
 
-    public void parse() throws IOException {
+    public IntermediateCode parse() throws IOException {
         System.out.println("\n----------Printing Tokens---------\n");
 
         while (scanner.peekChar() != Source.EOF) {
@@ -31,6 +32,8 @@ public class Parser {
             IntermediateCode root = parseList().getCar();
             topLevelLists.add(root);
         }
+
+        return null;
     }
 
     public IntermediateCode parseList() {
@@ -67,13 +70,19 @@ public class Parser {
             }
 
             if (token.getType() == TokenType.DEFINE) {
-
+                Parser parser = new DefineParser(scanner);
+                IntermediateCode iCode = parser.parse();
+                // Do something with intermediate code here
             }
             else if (token.getType() == TokenType.LAMBDA) {
-
+                Parser parser = new DefineParser(scanner);
+                IntermediateCode iCode = parser.parse();
+                // Do something with intermediate code here
             }
             else if (token.getType() == TokenType.LET) {
-
+                Parser parser = new DefineParser(scanner);
+                IntermediateCode iCode = parser.parse();
+                // Do something with intermediate code here
             }
             else {
                 switch (token.getType()) {

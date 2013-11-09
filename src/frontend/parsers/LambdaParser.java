@@ -11,10 +11,12 @@ public class LambdaParser extends Parser {
         super(scanner);
     }
 
-    public void parse() throws IOException {
-
+    @Override
+    public IntermediateCode parse() throws IOException {
+        return null;
     }
 
+    @Override
     public IntermediateCode parseList() {
         return null; // Placeholder
     }
