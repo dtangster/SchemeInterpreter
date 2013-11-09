@@ -1,7 +1,7 @@
 package frontend;
 
 import frontend.tokens.NumberToken;
-import frontend.tokens.SpecialSymbolToken;
+import frontend.tokens.SymbolToken;
 import frontend.tokens.WordToken;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class Scanner {
             token = new NumberToken(source);
         }
         else {
-            token = new SpecialSymbolToken(source);
+            token = new SymbolToken(source);
         }
 
         return token;

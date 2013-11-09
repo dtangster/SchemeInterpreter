@@ -6,8 +6,8 @@ import frontend.TokenType;
 
 import java.io.IOException;
 
-public class SpecialSymbolToken extends Token {
-    public SpecialSymbolToken(Source source) throws IOException {
+public class SymbolToken extends Token {
+    public SymbolToken(Source source) throws IOException {
         super(source);
     }
 

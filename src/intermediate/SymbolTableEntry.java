@@ -3,7 +3,7 @@ package intermediate;
 import java.util.HashMap;
 
 // We are not using the HashMap it extends for this assignment.
-public class SymbolTableEntry extends HashMap<Attribute, Object> {
+public class SymbolTableEntry extends HashMap<SymbolTableEntryAttribute, Object> {
     private String name;
     private SymbolTable symbolTable; // The table that contains this entry
 
@@ -20,11 +20,11 @@ public class SymbolTableEntry extends HashMap<Attribute, Object> {
         return symbolTable;
     }
 
-    public void setAttribute(Attribute key, Object value) {
+    public void setAttribute(SymbolTableEntryAttribute key, Object value) {
         put(key, value);
     }
 
-    public Object getAttribute(Attribute key) {
+    public Object getAttribute(SymbolTableEntryAttribute key) {
         return get(key);
     }
 
