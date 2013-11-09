@@ -36,6 +36,7 @@ public class Parser {
     public IntermediateCode parse() throws IOException {
         System.out.println("\n----------Printing Tokens---------\n");
         Parser parser = new ListParser(symbolTableStack, scanner);
+        Token token = nextToken(); // Get first character
 
         while (scanner.peekChar() != Source.EOF) {
             IntermediateCode root = parser.parse();

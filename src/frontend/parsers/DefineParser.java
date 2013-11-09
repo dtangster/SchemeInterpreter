@@ -28,11 +28,13 @@ public class DefineParser extends Parser {
             rootNode.setCdr(newNode); // CDR node which has a CAR node containing identifier name
             newNode.setCar(new IntermediateCode()); // CADR of root with text = <identifier name>
             newNode.getCar().setText(token.getText());
+            token = nextToken(); // Consume identifier name
 
             switch (token.getType()) {
                 case LEFT_PAREN:
-                    rootNode.setCdr((new ListParser(symbolTableStack, scanner)).parse());
+                    newNode.setCdr((new ListParser(symbolTableStack, scanner)).parse());
                     break;
+                case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
                     // Enter something into symbol table
                     break;
