@@ -66,25 +66,36 @@ public class Parser {
                 System.out.println(scanner);
             }
 
-            switch (token.getType()) {
-                case LEFT_PAREN:
-                    counter++;
-                    newNode = new IntermediateCode();
-                    newNode.setCar(parseList());
-                    newNode.setCdr(parseList());
-                    break;
-                case RIGHT_PAREN:
-                    counter--;
-                case END_OF_FILE:
-                    break;
-                case REGULAR_SYMBOL:
-                    SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
-                    symbolTable.put(token.getText(), entry);
-                default:
-                    newNode = new IntermediateCode();
-                    newNode.setText(token.getText());
-                    newNode.setType(token.getType());
-                    newNode.setCdr(parseList());
+            if (token.getType() == TokenType.DEFINE) {
+
+            }
+            else if (token.getType() == TokenType.LAMBDA) {
+
+            }
+            else if (token.getType() == TokenType.LET) {
+
+            }
+            else {
+                switch (token.getType()) {
+                    case LEFT_PAREN:
+                        counter++;
+                        newNode = new IntermediateCode();
+                        newNode.setCar(parseList());
+                        newNode.setCdr(parseList());
+                        break;
+                    case RIGHT_PAREN:
+                        counter--;
+                    case END_OF_FILE:
+                        break;
+                    case REGULAR_SYMBOL:
+                        SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
+                        symbolTable.put(token.getText(), entry);
+                    default:
+                        newNode = new IntermediateCode();
+                        newNode.setText(token.getText());
+                        newNode.setType(token.getType());
+                        newNode.setCdr(parseList());
+                }
             }
         }
         catch (IOException e) {
