@@ -18,7 +18,6 @@ public class Backend {
             System.out.println();
         }
 
-
         System.out.println("\n----------Printing Symbol Table---------\n");
         printSymbolTableStack(symbolTableStack);
     }

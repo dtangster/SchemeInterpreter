@@ -35,18 +35,92 @@ public class Parser {
 
     public IntermediateCode parse() throws IOException {
         System.out.println("\n----------Printing Tokens---------\n");
-        Parser parser = new ListParser(symbolTableStack, scanner);
         Token token = nextToken(); // Get first character
 
         while (scanner.peekChar() != Source.EOF) {
-            IntermediateCode root = parser.parse();
+            IntermediateCode root = parseList();
             topLevelLists.add(root);
         }
 
         return null;
     }
 
-    // TODO: WE WILL BE DELETING THIS FUNCTION!!!
+    public IntermediateCode parseList() throws IOException {
+        IntermediateCode rootNode = null;
+
+        try {
+            Token token = nextToken(); // Consume (
+            rootNode = new IntermediateCode();
+            IntermediateCode newNode;
+            SymbolTableEntry symbol;
+
+            switch (token.getType()) {
+                case LEFT_PAREN:
+                    rootNode.setCar(parse());
+                    rootNode.setCdr(parse());
+                    break;
+                case DEFINE:
+                    newNode = new IntermediateCode();
+                    newNode.setText(token.getText());
+                    rootNode.setCar(newNode);
+                    newNode = new IntermediateCode();
+                    rootNode.setCdr(newNode);
+                    token = nextToken(); // Consume define
+                    newNode.setCar(new IntermediateCode());
+                    newNode.getCar().setText(token.getText());
+                    symbol = new SymbolTableEntry(token.getText(), symbolTable);
+                    symbolTable.put(token.getText(), symbol);
+                    token = nextToken(); // Consume identifier
+                    newNode.setCdr(parse());
+                    break;
+                case LAMBDA:
+                    newNode = new IntermediateCode();
+                    newNode.setText(token.getText());
+                    rootNode.setCar(newNode);
+                    newNode = new IntermediateCode();
+                    rootNode.setCdr(newNode);
+                    token = nextToken(); // Consume lambda
+                    token = nextToken(); // Consume (
+
+                    while (token.getType() == TokenType.REGULAR_SYMBOL) {
+                        IntermediateCode temp = new IntermediateCode();
+                        temp.setText(token.getText());
+                        newNode.setCar(temp);
+                        symbol = new SymbolTableEntry(token.getText(), symbolTable);
+                        symbolTable.put(token.getText(), symbol);
+                        token = nextToken();
+
+                        if (token.getType() == TokenType.REGULAR_SYMBOL) {
+                            newNode.setCdr(new IntermediateCode());
+                            newNode = newNode.getCdr();
+                        }
+                    }
+
+                    token = nextToken(); // Consume )
+                    rootNode.getCdr().setCdr(parse());
+                    break;
+                case LET:
+                    newNode = new IntermediateCode();
+                    newNode.setText(token.getText());
+                    rootNode.setCar(newNode);
+                    token = nextToken(); // Consume let
+                    rootNode.setCdr(parse());
+                    break;
+                case RESERVED_SYMBOL:
+                case REGULAR_SYMBOL:
+                    symbol = new SymbolTableEntry(token.getText(), symbolTable);
+                    symbolTable.put(token.getText(), symbol);
+                    // Do something
+                    break;
+                default:
+                    // Do something else if not one of the above
+            }
+        } catch (IOException ex) { ex.printStackTrace(); }
+
+        return rootNode;
+    }
+
+    /*
     public IntermediateCode parseList() {
         IntermediateCode newNode = null;
 
@@ -80,42 +154,25 @@ public class Parser {
                 System.out.println(scanner);
             }
 
-            if (token.getType() == TokenType.DEFINE) {
-                Parser parser = new DefineParser(symbolTableStack, scanner);
-                IntermediateCode iCode = parser.parse();
-                // Do something with intermediate code here
-            }
-            else if (token.getType() == TokenType.LAMBDA) {
-                Parser parser = new DefineParser(symbolTableStack, scanner);
-                IntermediateCode iCode = parser.parse();
-                // Do something with intermediate code here
-            }
-            else if (token.getType() == TokenType.LET) {
-                Parser parser = new DefineParser(symbolTableStack, scanner);
-                IntermediateCode iCode = parser.parse();
-                // Do something with intermediate code here
-            }
-            else {
-                switch (token.getType()) {
-                    case LEFT_PAREN:
-                        counter++;
-                        newNode = new IntermediateCode();
-                        newNode.setCar(parseList());
-                        newNode.setCdr(parseList());
-                        break;
-                    case RIGHT_PAREN:
-                        counter--;
-                    case END_OF_FILE:
-                        break;
-                    case REGULAR_SYMBOL:
-                        SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
-                        symbolTable.put(token.getText(), entry);
-                    default:
-                        newNode = new IntermediateCode();
-                        newNode.setText(token.getText());
-                        newNode.setType(token.getType());
-                        newNode.setCdr(parseList());
-                }
+            switch (token.getType()) {
+                case LEFT_PAREN:
+                    counter++;
+                    newNode = new IntermediateCode();
+                    newNode.setCar(parseList());
+                    newNode.setCdr(parseList());
+                    break;
+                case RIGHT_PAREN:
+                    counter--;
+                case END_OF_FILE:
+                    break;
+                case REGULAR_SYMBOL:
+                    SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
+                    symbolTable.put(token.getText(), entry);
+                default:
+                    newNode = new IntermediateCode();
+                    newNode.setText(token.getText());
+                    newNode.setType(token.getType());
+                    newNode.setCdr(parseList());
             }
         }
         catch (IOException e) {
@@ -124,6 +181,7 @@ public class Parser {
 
         return newNode;
     }
+    */
 
     public Scanner getScanner() {
         return scanner;
