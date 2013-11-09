@@ -35,15 +35,17 @@ public class Parser {
 
     public IntermediateCode parse() throws IOException {
         System.out.println("\n----------Printing Tokens---------\n");
+        Parser parser = new ListParser(symbolTableStack, scanner);
 
         while (scanner.peekChar() != Source.EOF) {
-            IntermediateCode root = parseList().getCar();
+            IntermediateCode root = parser.parse();
             topLevelLists.add(root);
         }
 
         return null;
     }
 
+    // TODO: WE WILL BE DELETING THIS FUNCTION!!!
     public IntermediateCode parseList() {
         IntermediateCode newNode = null;
 
