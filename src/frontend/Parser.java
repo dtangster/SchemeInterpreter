@@ -105,11 +105,11 @@ public class Parser {
                     break;
                 case LET:
                     newNode = new IntermediateCode();
+                    newNode.setText(token.getText());
                     rootNode.setCar(newNode);
-                    newNode.setCar(new IntermediateCode());
-                    newNode.getCar().setText(token.getText());
-                    newNode.setCdr(new IntermediateCode());
-                    newNode = newNode.getCdr();
+                    newNode = new IntermediateCode();
+                    rootNode.setCdr(newNode);
+                    newNode = rootNode.getCdr();
                     IntermediateCode resumeNode = newNode;
                     newNode.setCar(new IntermediateCode());
                     newNode = newNode.getCar();
