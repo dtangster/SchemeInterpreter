@@ -74,10 +74,13 @@ public class Parser {
                     break;
                 case LAMBDA:
                     newNode = new IntermediateCode();
-                    newNode.setText(token.getText());
                     rootNode.setCar(newNode);
-                    newNode = new IntermediateCode();
-                    rootNode.setCdr(newNode);
+                    newNode.setCar(new IntermediateCode());
+                    newNode.getCar().setText(token.getText());
+                    newNode.setCdr(new IntermediateCode());
+                    newNode = newNode.getCdr();
+                    newNode.setCar(new IntermediateCode());
+                    newNode = newNode.getCar();
                     token = nextToken(); // Consume lambda
                     token = nextToken(); // Consume (
 
@@ -87,7 +90,7 @@ public class Parser {
                         newNode.setCar(temp);
                         symbol = new SymbolTableEntry(token.getText(), symbolTable);
                         symbolTable.put(token.getText(), symbol);
-                        token = nextToken();
+                        token = nextToken(); // Consume identifier
 
                         if (token.getType() == TokenType.REGULAR_SYMBOL) {
                             newNode.setCdr(new IntermediateCode());
@@ -96,14 +99,18 @@ public class Parser {
                     }
 
                     token = nextToken(); // Consume )
-                    rootNode.getCdr().setCdr(parseList());
+                    rootNode.getCar().getCdr().setCdr(parseList());
                     break;
                 case LET:
                     newNode = new IntermediateCode();
-                    newNode.setText(token.getText());
                     rootNode.setCar(newNode);
+                    newNode.setCar(new IntermediateCode());
+                    newNode.getCar().setText(token.getText());
                     token = nextToken(); // Consume let
-                    rootNode.setCdr(parseList());
+                    newNode.setCdr(new IntermediateCode());
+                    newNode = newNode.getCdr();
+                    newNode.setCar(parseList());
+                    newNode.setCdr(parseList());
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
