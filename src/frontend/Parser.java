@@ -75,11 +75,11 @@ public class Parser {
                     break;
                 case LAMBDA:
                     newNode = new IntermediateCode();
+                    newNode.setText(token.getText());
                     rootNode.setCar(newNode);
-                    newNode.setCar(new IntermediateCode());
-                    newNode.getCar().setText(token.getText());
-                    newNode.setCdr(new IntermediateCode());
-                    newNode = newNode.getCdr();
+                    newNode = new IntermediateCode();
+                    rootNode.setCdr(newNode);
+                    newNode = rootNode.getCdr();
                     newNode.setCar(new IntermediateCode());
                     newNode = newNode.getCar();
                     token = nextToken(); // Consume lambda
@@ -100,7 +100,8 @@ public class Parser {
                     }
 
                     token = nextToken(); // Consume )
-                    rootNode.getCar().getCdr().setCdr(parseList());
+                    rootNode.getCdr().setCdr(new IntermediateCode());
+                    rootNode.getCdr().getCdr().setCar(parseList());
                     break;
                 case LET:
                     newNode = new IntermediateCode();
