@@ -70,7 +70,8 @@ public class Parser {
                     symbol = new SymbolTableEntry(token.getText(), symbolTable);
                     symbolTable.put(token.getText(), symbol);
                     token = nextToken(); // Consume identifier
-                    newNode.setCdr(parseList());
+                    newNode.setCdr(new IntermediateCode());
+                    newNode.getCdr().setCar(parseList());
                     break;
                 case LAMBDA:
                     newNode = new IntermediateCode();
