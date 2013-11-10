@@ -14,54 +14,28 @@ public class Backend {
     {
         System.out.println("\n----------Printing Parse Tree---------\n");
         for(IntermediateCode iCode : intermediateCodes) {
-            printParseTree(iCode, "", false);
-            System.out.println();
+            printParseTree(iCode);
         }
 
         System.out.println("\n----------Printing Symbol Table---------\n");
         printSymbolTableStack(symbolTableStack);
     }
 
-
-    public void printParseTree(IntermediateCode intermediateCode, String space, boolean prevQuote) {
+    // TODO: Need to fix printing
+    public void printParseTree(IntermediateCode intermediateCode) {
         if (intermediateCode == null) {
             return;
         }
-        boolean pQuote = prevQuote;
+
+        printParseTree(intermediateCode.getCar());
+        printParseTree(intermediateCode.getCdr());
 
         if (intermediateCode.getText() != null) {
-            if (intermediateCode.getText().compareTo("'") == 0) {
-                System.out.print("\n");
-                System.out.print(space);
-                System.out.print(intermediateCode.getText());
-                pQuote = true;
-            }else {
-                if (intermediateCode.getText().equalsIgnoreCase("define")){
-                    if (pQuote) {
-                        pQuote = false;
-                    }else{
-                        System.out.print("\n" + space);
-                    }
-                    space = space + "  ";
-                    System.out.print("(");
-                }
-                System.out.print(intermediateCode.getText() + ' ');
-            }
-        }else {
-            if (pQuote) {
-                pQuote = false;
-            }else{
-                System.out.print("\n" + space);
-            }
-            space = space + "  ";
-            System.out.print('(');
+            System.out.print("(" + intermediateCode.getText());
         }
 
-        printParseTree(intermediateCode.getCar(), space, pQuote);
-        printParseTree(intermediateCode.getCdr(), space, pQuote);
-
         if (intermediateCode.getCdr() == null) {
-            System.out.print(")");
+            //System.out.println(")");
         }
     }
 
