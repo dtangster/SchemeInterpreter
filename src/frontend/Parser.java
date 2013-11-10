@@ -106,16 +106,42 @@ public class Parser {
                     rootNode.setCar(newNode);
                     newNode.setCar(new IntermediateCode());
                     newNode.getCar().setText(token.getText());
-                    token = nextToken(); // Consume let
                     newNode.setCdr(new IntermediateCode());
                     newNode = newNode.getCdr();
-                    newNode.setCar(parseList());
-                    newNode.setCdr(parseList());
+                    IntermediateCode resumeNode = newNode;
+                    newNode.setCar(new IntermediateCode());
+                    newNode = newNode.getCar();
+                    token = nextToken(); // Consume let
+                    token = nextToken(); // Consume (
+
+                    while (token.getType() == TokenType.LEFT_PAREN) {
+                        token = nextToken(); // Consume (
+                        newNode.setCar(new IntermediateCode());
+                        newNode.getCar().setText(token.getText());
+                        symbol = new SymbolTableEntry(token.getText(), symbolTable);
+                        symbolTable.put(token.getText(), symbol);
+                        token = nextToken(); // Consume identifier
+
+                        if (token.getType() == TokenType.LEFT_PAREN) {
+                            newNode.setCdr(parseList());
+                        }
+                        else {
+                            newNode.setCdr(new IntermediateCode());
+                            newNode.getCdr().setCar(new IntermediateCode());
+                            newNode.getCdr().getCar().setText(token.getText());
+                        }
+                    }
+
+                    resumeNode.setCdr(parseList());
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
                     symbol = new SymbolTableEntry(token.getText(), symbolTable);
                     symbolTable.put(token.getText(), symbol);
+                    newNode = new IntermediateCode();
+                    newNode.setText(token.getText());
+                    rootNode.setCar(newNode);
+                    token = nextToken(); // Consume the identifier
                     // Do something
                     break;
                 default:
