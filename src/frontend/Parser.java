@@ -2,6 +2,7 @@ package frontend;
 
 import intermediate.IntermediateCode;
 import intermediate.SymbolTableEntry;
+import intermediate.SymbolTableEntryAttribute;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;
@@ -76,13 +77,20 @@ public class Parser {
                     rootNode.setCdr(parseList());
 
                     // Linking parse tree with symbol table
-                    switch (rootNode.getCar().getType()) {
-                        case DEFINE:
-                            break;
-                        case LAMBDA:
-                            break;
-                        case LET:
+                    if (rootNode.getCar() != null && rootNode.getCar().getType() != null) {
+                        switch (rootNode.getCar().getType()) {
+                            case DEFINE:
+                                SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCdr().getCar().getText());
+                                entry.put(SymbolTableEntryAttribute.VALUE, rootNode.getCdr().getCdr());
+                                break;
+                            case LAMBDA:
+                                //SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCdr().getCdr().getCar().getText());
+                                //entry.put(SymbolTableEntryAttribute.VALUE, rootNode.getCdr().getCdr());
+                                break;
+                            case LET:
+                        }
                     }
+
                     break;
                 case RIGHT_PAREN:
                     if (!parenthesisCount.empty() && parenthesisCount.peek() > 0) {
