@@ -14,7 +14,6 @@ public class Parser {
     protected ArrayList<IntermediateCode> topLevelLists;
     protected Scanner scanner;
     private Stack<Integer> parenthesisCount;
-    private boolean newSymbolTable = false;
 
     public Parser(Scanner scanner) {
         topLevelLists = new ArrayList<IntermediateCode>();
@@ -65,11 +64,7 @@ public class Parser {
 
             switch (token.getType()) {
                 case LEFT_PAREN:
-                    if (newSymbolTable) {
-                        newSymbolTable = false;
-                        parenthesisCount.push(1);
-                    }
-                    else if (!parenthesisCount.empty()) {
+                    if (!parenthesisCount.empty()) {
                         parenthesisCount.push(parenthesisCount.pop() + 1);
                     }
 
@@ -80,8 +75,8 @@ public class Parser {
                     if (rootNode.getCar() != null && rootNode.getCar().getType() != null) {
                         switch (rootNode.getCar().getType()) {
                             case DEFINE:
-                                SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCdr().getCar().getText());
-                                entry.put(SymbolTableEntryAttribute.VALUE, rootNode.getCdr().getCdr());
+                                //SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCdr().getCar().getText());
+                                //entry.put(SymbolTableEntryAttribute.VALUE, rootNode.getCdr().getCdr());
                                 break;
                             case LAMBDA:
                                 //SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCdr().getCdr().getCar().getText());
@@ -93,19 +88,15 @@ public class Parser {
 
                     break;
                 case RIGHT_PAREN:
-                    if (!parenthesisCount.empty() && parenthesisCount.peek() > 0) {
+                    if (parenthesisCount.peek() > 0) {
                         parenthesisCount.push(parenthesisCount.pop() - 1);
 
                         if (parenthesisCount.peek() == 0) {
                             parenthesisCount.pop();
 
-                            // TODO: I think this is correct. The symbol table will contain
-                            // TODO: nothing if we pop everything off. I'm leaving this
-                            // TODO: uncommented only for debugging. Note that the nesting
-                            // TODO: level shown is not correct because of how the Backend
-                            // TODO: prints it out. The printSymbolTableStack() method
-                            // TODO: will be removed entirely for this assignment.
-                            //symbolTableStack.pop();
+                            // TODO: Comment this line out if you want to see parse tree for debugging.
+                            // TODO: This should stay in the final version.
+                            // symbolTableStack.pop();
                         }
                     }
                 case END_OF_FILE:
@@ -116,7 +107,12 @@ public class Parser {
                     rootNode.setText(token.getText());
                     rootNode.setType(token.getType());
                     symbolTableStack.push();
-                    newSymbolTable = true;
+
+                    if (!parenthesisCount.empty()) {
+                        parenthesisCount.push(parenthesisCount.pop() - 1);
+                    }
+
+                    parenthesisCount.push(1);
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
@@ -126,7 +122,6 @@ public class Parser {
                         // If it gets in here, that means a variable was defined twice in the same SymbolTable.
                         // This would be an error.
 
-                        // TODO: This is disabled for now because there is a logic error somewhere.
                         //noError = false;
                     }
                     else {
@@ -134,6 +129,9 @@ public class Parser {
 
                         if (symbol != null) {
                             // If it gets in here, that means the symbol has been defined elsewhere. So use it!
+
+                            // TODO: This line is for debugging only. It should NOT be entered into local symbol table.
+                            symbolTableStack.enterLocal(token.getText());
                         }
                         else {
                             symbolTableStack.enterLocal(token.getText());
