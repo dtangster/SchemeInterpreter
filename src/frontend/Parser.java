@@ -13,8 +13,6 @@ public class Parser {
     protected SymbolTable symbolTable;
     protected ArrayList<IntermediateCode> topLevelLists;
     protected Scanner scanner;
-    private  int counter = 0;
-    private boolean initial = true;
 
     public Parser(Scanner scanner) {
         topLevelLists = new ArrayList<IntermediateCode>();
@@ -34,7 +32,6 @@ public class Parser {
 
     public IntermediateCode parse() throws IOException {
         System.out.println("\n----------Printing Tokens---------\n");
-        Token token = nextToken(); // Get first character
 
         while (scanner.peekChar() != Source.EOF) {
             IntermediateCode root = parseList();
@@ -44,11 +41,49 @@ public class Parser {
         return null;
     }
 
+    public IntermediateCode parseList() {
+        IntermediateCode rootNode = new IntermediateCode();
+
+        try {
+            Token token = nextToken();
+
+            switch (token.getType()) {
+                case LEFT_PAREN:
+                    rootNode.setCar(parseList());
+                    rootNode.setCdr(parseList());
+                    break;
+                case RIGHT_PAREN:
+                case END_OF_FILE:
+                    return null;
+                case DEFINE:
+                case LAMBDA:
+                case LET:
+                    rootNode.setText(token.getText());
+                    rootNode.setType(token.getType());
+                    break;
+                case REGULAR_SYMBOL:
+                    SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
+                    symbolTable.put(token.getText(), entry);
+                default:
+                    rootNode.setCar(new IntermediateCode());
+                    rootNode.getCar().setText(token.getText());
+                    rootNode.getCar().setType(token.getType());
+                    rootNode.setCdr(parseList());
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return rootNode;
+    }
+
+    /*
     public IntermediateCode parseList() throws IOException {
         IntermediateCode rootNode = null;
 
         try {
-            Token token = nextToken(); // Consume (
+            Token token = nextToken();
             rootNode = new IntermediateCode();
             IntermediateCode newNode;
             SymbolTableEntry symbol;
@@ -57,6 +92,10 @@ public class Parser {
                 case LEFT_PAREN:
                     rootNode.setCar(parseList());
                     rootNode.setCdr(parseList());
+                    break;
+                case RIGHT_PAREN:
+                    break;
+                case END_OF_FILE:
                     break;
                 case DEFINE:
                     newNode = new IntermediateCode();
@@ -153,6 +192,7 @@ public class Parser {
 
         return rootNode;
     }
+    */
 
     /*
     public IntermediateCode parseList() {
