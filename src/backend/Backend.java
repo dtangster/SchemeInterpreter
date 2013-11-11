@@ -28,34 +28,41 @@ public class Backend {
             return;
         }
 
-        printParseTree(intermediateCode.getCar());
-        printParseTree(intermediateCode.getCdr());
-
         boolean hasText = intermediateCode.getText() != null;
         boolean hasCar = intermediateCode.getCar() != null;
         boolean hasCdr = intermediateCode.getCdr() != null;
-        boolean isLeaf = !hasCar && !hasCdr;
-        boolean reserved = TokenType.RESERVED_SYMBOLS.containsKey(intermediateCode.getText())
-                        || TokenType.RESERVED_WORDS.containsKey(intermediateCode.getText());
 
-        if (reserved) {
+        if (hasCar && isReserved(intermediateCode.getCar().getText())) {
             System.out.print("\n(");
         }
+        else if (hasCar && hasCdr && intermediateCode.getCdr().getCdr() == null
+                && isLeaf(intermediateCode.getCar()) && !isReserved(intermediateCode.getCar().getText()))
+        {
+            System.out.print("(");
+        }
+
+        printParseTree(intermediateCode.getCar());
+        printParseTree(intermediateCode.getCdr());
 
         if (hasText) {
             System.out.print(intermediateCode.getText() + " ");
 
-            if (intermediateCode.getType() == TokenType.LAMBDA) {
+            if (intermediateCode.getType() == TokenType.LET) {
                 System.out.print("(");
-            }
-            else if (intermediateCode.getType() == TokenType.LET) {
-                System.out.print("((");
             }
         }
 
         if (hasCar && !hasCdr) {
             System.out.print(")");
         }
+    }
+
+    private boolean isReserved(String text) {
+        return TokenType.RESERVED_SYMBOLS.containsKey(text) || TokenType.RESERVED_WORDS.containsKey(text);
+    }
+
+    private boolean isLeaf(IntermediateCode node) {
+        return node.getCar() == null && node.getCdr() == null;
     }
 
     public void printSymbolTableStack(SymbolTableStack symbolTableStack) {

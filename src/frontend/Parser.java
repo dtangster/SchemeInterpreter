@@ -108,7 +108,9 @@ public class Parser {
                     if (symbol != null) {
                         // If it gets in here, that means a variable was defined twice in the same SymbolTable.
                         // This would be an error.
-                        noError = false;
+
+                        // TODO: This is disabled for now because there is a logic error somewhere.
+                        //noError = false;
                     }
                     else {
                         symbol = symbolTableStack.lookup(token.getText());
