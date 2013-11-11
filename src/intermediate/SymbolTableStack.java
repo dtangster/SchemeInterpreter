@@ -9,6 +9,8 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
         currentNestingLevel = 0;
         SymbolTable initial = new SymbolTable();
         add(initial);
+
+        //TODO: We have to add stuff to the initial symbol table, such as CAR, CDR, etc.
     }
 
     public int getCurrentNestingLevel() {
