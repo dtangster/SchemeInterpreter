@@ -74,6 +74,15 @@ public class Parser {
 
                     rootNode.setCar(parseList());
                     rootNode.setCdr(parseList());
+
+                    // Linking parse tree with symbol table
+                    switch (rootNode.getCar().getType()) {
+                        case DEFINE:
+                            break;
+                        case LAMBDA:
+                            break;
+                        case LET:
+                    }
                     break;
                 case RIGHT_PAREN:
                     if (!parenthesisCount.empty() && parenthesisCount.peek() > 0) {

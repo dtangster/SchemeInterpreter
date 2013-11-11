@@ -10,16 +10,29 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Backend {
-    public void process(ArrayList<IntermediateCode> intermediateCodes,
-                        SymbolTableStack symbolTableStack) throws IOException
-    {
+    private ArrayList<SymbolTable> runtimeDisplay;
+
+    public Backend() {
+        runtimeDisplay = new ArrayList<SymbolTable>();
+    }
+
+    public void process(ArrayList<IntermediateCode> intermediateCodes, SymbolTableStack runtimeStack) throws IOException {
         System.out.println("\n----------Printing Parse Tree---------\n");
         for(IntermediateCode iCode : intermediateCodes) {
             printParseTree(iCode);
         }
 
         System.out.println("\n----------Printing Symbol Table---------\n");
-        printSymbolTableStack(symbolTableStack);
+        printSymbolTableStack(runtimeStack);
+
+        System.out.println("\n----------Executing---------\n");
+        for(IntermediateCode iCode : intermediateCodes) {
+            execute(iCode, runtimeStack);
+        }
+    }
+
+    public void execute(IntermediateCode intermediateCode, SymbolTableStack runtimeStack) throws IOException {
+
     }
 
     // TODO: Need to fix printing
