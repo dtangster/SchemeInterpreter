@@ -1,28 +1,24 @@
 package frontend;
 
 import intermediate.IntermediateCode;
-import intermediate.SymbolTable;
-import intermediate.SymbolTableEntry;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Parser {
     protected SymbolTableStack symbolTableStack;
     protected ArrayList<IntermediateCode> topLevelLists;
     protected Scanner scanner;
+    private Stack<Integer> parenthesisCount;
+    private boolean newLevel = false;
 
     public Parser(Scanner scanner) {
         topLevelLists = new ArrayList<IntermediateCode>();
         symbolTableStack = new SymbolTableStack();
         this.scanner = scanner;
-    }
-
-    public Parser(SymbolTableStack symbolTableStack, Scanner scanner) {
-        this.symbolTableStack = symbolTableStack;
-        this.scanner = scanner;
-        topLevelLists = new ArrayList<IntermediateCode>();
+        parenthesisCount = new Stack<Integer>();
     }
 
     public IntermediateCode parse() throws IOException {
@@ -44,10 +40,33 @@ public class Parser {
 
             switch (token.getType()) {
                 case LEFT_PAREN:
+                    if (newLevel) {
+                        newLevel = false;
+                        parenthesisCount.push(1);
+                    }
+                    else if (!parenthesisCount.empty()) {
+                        parenthesisCount.push(parenthesisCount.pop() + 1);
+                    }
+
                     rootNode.setCar(parseList());
                     rootNode.setCdr(parseList());
                     break;
                 case RIGHT_PAREN:
+                    if (!parenthesisCount.empty() && parenthesisCount.peek() > 0) {
+                        parenthesisCount.push(parenthesisCount.pop() - 1);
+
+                        if (parenthesisCount.peek() == 0) {
+                            parenthesisCount.pop();
+
+                            // TODO: I think this is correct. The symbol table will contain
+                            // TODO: nothing if we pop everything off. I'm leaving this
+                            // TODO: uncommented only for debugging. Note that the nesting
+                            // TODO: level shown is not correct because of how the Backend
+                            // TODO: prints it out. The printSymbolTableStack() method
+                            // TODO: will be removed entirely for this assignment.
+                            //symbolTableStack.pop();
+                        }
+                    }
                 case END_OF_FILE:
                     return null;
                 case DEFINE:
@@ -56,6 +75,7 @@ public class Parser {
                     rootNode.setText(token.getText());
                     rootNode.setType(token.getType());
                     symbolTableStack.push();
+                    newLevel = true;
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
