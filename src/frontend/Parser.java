@@ -1,6 +1,7 @@
 package frontend;
 
 import intermediate.IntermediateCode;
+import intermediate.SymbolTableEntry;
 import intermediate.SymbolTableStack;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class Parser {
 
         try {
             Token token = nextToken();
+            boolean noError = true;
 
             switch (token.getType()) {
                 case LEFT_PAREN:
@@ -79,11 +81,31 @@ public class Parser {
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
-                    symbolTableStack.enterLocal(token.getText());
+                    SymbolTableEntry symbol = symbolTableStack.lookupLocal(token.getText());
+
+                    if (symbol != null) {
+                        // If it gets in here, that means a variable was defined twice in the same SymbolTable.
+                        // This would be an error.
+                        noError = false;
+                    }
+                    else {
+                        symbol = symbolTableStack.lookup(token.getText());
+
+                        if (symbol != null) {
+                            // If it gets in here, that means the symbol has been defined elsewhere. So use it!
+                        }
+                        else {
+                            symbolTableStack.enterLocal(token.getText());
+                        }
+                    }
                 default:
-                    rootNode.setCar(new IntermediateCode());
-                    rootNode.getCar().setText(token.getText());
-                    rootNode.getCar().setType(token.getType());
+                    if (noError) {
+                        rootNode.setCar(new IntermediateCode());
+                        rootNode.getCar().setText(token.getText());
+                        rootNode.getCar().setType(token.getType());
+                    }
+
+                    noError = true;
                     rootNode.setCdr(parseList());
             }
         }
