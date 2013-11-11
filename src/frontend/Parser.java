@@ -40,6 +40,28 @@ public class Parser {
             Token token = nextToken();
             boolean noError = true;
 
+            System.out.print("\t" + token.getText() + "\t");
+
+            if (TokenType.RESERVED_WORDS.containsKey(token.getText())) {
+                System.out.println("Reserved Word");
+            }
+            else if (TokenType.RESERVED_SYMBOLS.containsKey(token.getText())) {
+                System.out.println("Reserved Symbol");
+            }
+            else if (token.getType() == TokenType.REGULAR_SYMBOL) {
+                System.out.println("Symbol");
+            }
+            else if (token.getType() == TokenType.INTEGER) {
+                System.out.println("Integer");
+            }
+            else if (token.getType() == TokenType.REAL) {
+                System.out.println("Real");
+            }
+
+            if (scanner.getPosition() == 0) {
+                System.out.println(scanner);
+            }
+
             switch (token.getType()) {
                 case LEFT_PAREN:
                     if (newSymbolTable) {
@@ -104,8 +126,10 @@ public class Parser {
                         rootNode.getCar().setText(token.getText());
                         rootNode.getCar().setType(token.getType());
                     }
+                    else {
+                        noError = true;
+                    }
 
-                    noError = true;
                     rootNode.setCdr(parseList());
             }
         }

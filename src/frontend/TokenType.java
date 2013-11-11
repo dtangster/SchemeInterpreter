@@ -5,7 +5,7 @@ import java.util.HashMap;
 public enum TokenType {
     // Reserved words (Does not go into symbol table)
     AND, COND, CONS, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR("let*"),
-    MAP, NOT, NULL("null?"), OR,
+    MAP, MINUS("-"), NOT, NULL("null?"), OR, PLUS("+"),
 
     // Reserved special symbols (Does not go into symbol table)
     LEFT_PAREN("("), RIGHT_PAREN(")"), QUOTE("'"),
@@ -17,7 +17,7 @@ public enum TokenType {
     ERROR, END_OF_FILE;
 
     private static final int FIRST_RESERVED_WORD_INDEX = AND.ordinal();
-    private static final int LAST_RESERVED_WORD_INDEX = OR.ordinal();
+    private static final int LAST_RESERVED_WORD_INDEX = PLUS.ordinal();
 
     private static final int FIRST_RESERVED_SYMBOL_INDEX = LEFT_PAREN.ordinal();
     private static final int LAST_RESERVED_SYMBOL_INDEX  = QUOTE.ordinal();

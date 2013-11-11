@@ -1,5 +1,6 @@
 package backend;
 
+import frontend.TokenType;
 import intermediate.IntermediateCode;
 import intermediate.SymbolTable;
 import intermediate.SymbolTableEntry;
@@ -30,12 +31,30 @@ public class Backend {
         printParseTree(intermediateCode.getCar());
         printParseTree(intermediateCode.getCdr());
 
-        if (intermediateCode.getText() != null) {
-            System.out.print("(" + intermediateCode.getText());
+        boolean hasText = intermediateCode.getText() != null;
+        boolean hasCar = intermediateCode.getCar() != null;
+        boolean hasCdr = intermediateCode.getCdr() != null;
+        boolean isLeaf = !hasCar && !hasCdr;
+        boolean reserved = TokenType.RESERVED_SYMBOLS.containsKey(intermediateCode.getText())
+                        || TokenType.RESERVED_WORDS.containsKey(intermediateCode.getText());
+
+        if (reserved) {
+            System.out.print("\n(");
         }
 
-        if (intermediateCode.getCdr() == null) {
-            //System.out.println(")");
+        if (hasText) {
+            System.out.print(intermediateCode.getText() + " ");
+
+            if (intermediateCode.getType() == TokenType.LAMBDA) {
+                System.out.print("(");
+            }
+            else if (intermediateCode.getType() == TokenType.LET) {
+                System.out.print("((");
+            }
+        }
+
+        if (hasCar && !hasCdr) {
+            System.out.print(")");
         }
     }
 
