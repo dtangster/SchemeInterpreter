@@ -42,7 +42,7 @@ public class Backend {
     public void printSymbolTableStack(SymbolTableStack symbolTableStack) {
         for (SymbolTable table : symbolTableStack) {
             for (SymbolTableEntry entry : table.values()) {
-                System.out.println(entry);
+                System.out.println("NESTING LEVEL: " + table.getNestingLevel() + "\t" + entry);
             }
         }
     }

@@ -55,6 +55,7 @@ public class Parser {
                 case LET:
                     rootNode.setText(token.getText());
                     rootNode.setType(token.getType());
+                    symbolTableStack.push();
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
