@@ -12,7 +12,7 @@ public class Parser {
     protected ArrayList<IntermediateCode> topLevelLists;
     protected Scanner scanner;
     private Stack<Integer> parenthesisCount;
-    private boolean newLevel = false;
+    private boolean newSymbolTable = false;
 
     public Parser(Scanner scanner) {
         topLevelLists = new ArrayList<IntermediateCode>();
@@ -40,8 +40,8 @@ public class Parser {
 
             switch (token.getType()) {
                 case LEFT_PAREN:
-                    if (newLevel) {
-                        newLevel = false;
+                    if (newSymbolTable) {
+                        newSymbolTable = false;
                         parenthesisCount.push(1);
                     }
                     else if (!parenthesisCount.empty()) {
@@ -75,7 +75,7 @@ public class Parser {
                     rootNode.setText(token.getText());
                     rootNode.setType(token.getType());
                     symbolTableStack.push();
-                    newLevel = true;
+                    newSymbolTable = true;
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
