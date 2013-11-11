@@ -6,7 +6,9 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
     private int currentNestingLevel;
 
     public SymbolTableStack() {
-        this.currentNestingLevel = -1;
+        currentNestingLevel = 0;
+        SymbolTable initial = new SymbolTable();
+        add(initial);
     }
 
     public int getCurrentNestingLevel() {
@@ -14,47 +16,30 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
     }
 
     public SymbolTable getLocalSymTab() {
-        if (!isEmpty()) {
-            return get(currentNestingLevel);
-        }
-
-        return null;
+        return get(currentNestingLevel);
     }
 
     public SymbolTableEntry enterLocal(String name) {
-        if (!isEmpty()) {
-            return get(currentNestingLevel).enter(name);
-        }
-
-        return null;
+        return get(currentNestingLevel).enter(name);
     }
 
     public SymbolTableEntry lookupLocal(String name) {
-        if (!isEmpty()) {
-            return get(currentNestingLevel).lookup(name);
-        }
-
-        return null;
+        return get(currentNestingLevel).lookup(name);
     }
 
     public SymbolTableEntry lookup(String name) {
-        if (!isEmpty()) {
-            SymbolTableEntry foundEntry = null;
+        SymbolTableEntry foundEntry = null;
 
-            for (int i = currentNestingLevel; i >= 0 && foundEntry == null; i--) {
-                foundEntry = get(i).lookup(name);
-            }
-
-            return foundEntry;
+        for (int i = currentNestingLevel; i >= 0 && foundEntry == null; i--) {
+            foundEntry = get(i).lookup(name);
         }
 
-        return null;
+        return foundEntry;
     }
 
     public SymbolTable pop() {
         if (!isEmpty()) {
-            currentNestingLevel--;
-            return remove(this.size() -1);
+            return remove(currentNestingLevel--);
         }
 
         return null;

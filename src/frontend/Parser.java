@@ -10,15 +10,12 @@ import java.util.ArrayList;
 
 public class Parser {
     protected SymbolTableStack symbolTableStack;
-    protected SymbolTable symbolTable;
     protected ArrayList<IntermediateCode> topLevelLists;
     protected Scanner scanner;
 
     public Parser(Scanner scanner) {
         topLevelLists = new ArrayList<IntermediateCode>();
         symbolTableStack = new SymbolTableStack();
-        symbolTable = new SymbolTable();
-        symbolTableStack.push(symbolTable);
         this.scanner = scanner;
     }
 
@@ -26,8 +23,6 @@ public class Parser {
         this.symbolTableStack = symbolTableStack;
         this.scanner = scanner;
         topLevelLists = new ArrayList<IntermediateCode>();
-        symbolTable = new SymbolTable();
-        symbolTableStack.push(symbolTable);
     }
 
     public IntermediateCode parse() throws IOException {
@@ -61,9 +56,9 @@ public class Parser {
                     rootNode.setText(token.getText());
                     rootNode.setType(token.getType());
                     break;
+                case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
-                    SymbolTableEntry entry = new SymbolTableEntry(token.getText(), symbolTable);
-                    symbolTable.put(token.getText(), entry);
+                    symbolTableStack.enterLocal(token.getText());
                 default:
                     rootNode.setCar(new IntermediateCode());
                     rootNode.getCar().setText(token.getText());
