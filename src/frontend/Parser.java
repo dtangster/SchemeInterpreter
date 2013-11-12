@@ -69,6 +69,15 @@ public class Parser {
                     }
 
                     rootNode.setCar(parseList());
+
+                    IntermediateCode newRoot = null;
+                    if (rootNode.getCar().getType() != null
+                            && (rootNode.getCar().getType() == TokenType.LAMBDA || rootNode.getCar().getType() == TokenType.LET))
+                    {
+                        newRoot = new IntermediateCode();
+                        newRoot.setCar(rootNode);
+                    }
+
                     rootNode.setCdr(parseList());
 
                     // Linking parse tree with symbol table
@@ -86,6 +95,9 @@ public class Parser {
                         }
                     }
 
+                    if (newRoot != null) {
+                        rootNode = newRoot;
+                    }
                     break;
                 case RIGHT_PAREN:
                     if (parenthesisCount.peek() > 0) {
