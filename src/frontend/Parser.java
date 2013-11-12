@@ -87,6 +87,7 @@ public class Parser {
                     {
                         SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCar().getText());
                         entry.put(SymbolTableEntryAttribute.BIND, rootNode.getCdr().getCdr());
+                        rootNode.getCar().setEntry(entry);
                     }
 
                     // Set the new root if DEFINE, LET, LETSTAR, or LETREC is read
