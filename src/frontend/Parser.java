@@ -19,13 +19,13 @@ public class Parser {
         topLevelLists = new ArrayList<IntermediateCode>();
         symbolTableStack = new SymbolTableStack();
         this.scanner = scanner;
-        parenthesisCount = new Stack<Integer>();
     }
 
     public IntermediateCode parse() throws IOException {
         System.out.println("\n----------Printing Tokens---------\n");
 
         while (scanner.peekChar() != Source.EOF) {
+            parenthesisCount = new Stack<Integer>();
             IntermediateCode root = parseList();
             topLevelLists.add(root);
         }
@@ -97,6 +97,10 @@ public class Parser {
                             // TODO: Comment this line out if you want to see parse tree for debugging.
                             // TODO: This should stay in the final version.
                             // symbolTableStack.pop();
+
+                            if (scanner.currentChar() == ')' || scanner.peekChar() == ')') {
+                                parseList();
+                            }
                         }
                     }
                 case END_OF_FILE:
@@ -122,6 +126,7 @@ public class Parser {
                         // If it gets in here, that means a variable was defined twice in the same SymbolTable.
                         // This would be an error.
 
+                        // TODO: This line needs to be uncommented. This is commented for debugging purposes.
                         //noError = false;
                     }
                     else {
