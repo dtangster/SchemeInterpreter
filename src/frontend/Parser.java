@@ -83,10 +83,11 @@ public class Parser {
 
                     // Linking parse tree with symbol table
                     if (rootNode.getCar() != null && rootNode.getCar().getType() != null
-                            && rootNode.getCar().getType() == TokenType.REGULAR_SYMBOL)
+                            && rootNode.getCar().getType() == TokenType.REGULAR_SYMBOL
+                            && rootNode.getCdr() != null && rootNode.getCdr().getCar() != null)
                     {
                         SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCar().getText());
-                        entry.put(SymbolTableEntryAttribute.BIND, rootNode.getCdr().getCdr());
+                        entry.put(SymbolTableEntryAttribute.BIND, rootNode.getCdr().getCar());
                         rootNode.getCar().setEntry(entry);
                     }
 
