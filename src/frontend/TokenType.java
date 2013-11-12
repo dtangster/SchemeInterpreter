@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public enum TokenType {
     // Reserved words (Does not go into symbol table)
-    AND, COND, CONS, DEFINE, ELSE, IF, LAMBDA, LET, LETREC, LETSTAR("let*"),
-    MAP, MINUS("-"), NOT, NULL("null?"), OR, PLUS("+"),
+    AND, COND, CONS, DEFINE, DIVIDE("/"), ELSE, IF, LAMBDA, LET, LETREC, LETSTAR("let*"),
+    MAP, MINUS("-"), MULTIPLY("*"), NOT, NULL("null?"), OR, PLUS("+"),
 
     // Reserved special symbols (Does not go into symbol table)
     LEFT_PAREN("("), RIGHT_PAREN(")"), QUOTE("'"),
