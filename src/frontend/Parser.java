@@ -38,8 +38,6 @@ public class Parser {
 
         try {
             Token token = nextToken();
-            boolean noError = true;
-
             System.out.print("\t" + token.getText() + "\t");
 
             if (TokenType.RESERVED_WORDS.containsKey(token.getText())) {
@@ -131,38 +129,21 @@ public class Parser {
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:
-                    SymbolTableEntry symbol = symbolTableStack.lookupLocal(token.getText());
+                    SymbolTableEntry symbol = symbolTableStack.lookup(token.getText());
 
                     if (symbol != null) {
-                        // If it gets in here, that means a variable was defined twice in the same SymbolTable.
-                        // This would be an error.
+                        // If it gets in here, that means the symbol has been defined elsewhere. So use it!
 
-                        // TODO: This line needs to be uncommented. This is commented for debugging purposes.
-                        noError = false;
+                        // TODO: This line is for debugging only. It should NOT be entered into local symbol table.
+                        //symbolTableStack.enterLocal(token.getText());
                     }
                     else {
-                        symbol = symbolTableStack.lookup(token.getText());
-
-                        if (symbol != null) {
-                            // If it gets in here, that means the symbol has been defined elsewhere. So use it!
-
-                            // TODO: This line is for debugging only. It should NOT be entered into local symbol table.
-                            //symbolTableStack.enterLocal(token.getText());
-                        }
-                        else {
-                            symbolTableStack.enterLocal(token.getText());
-                        }
+                        symbolTableStack.enterLocal(token.getText());
                     }
                 default:
-                    if (noError) {
-                        rootNode.setCar(new IntermediateCode());
-                        rootNode.getCar().setText(token.getText());
-                        rootNode.getCar().setType(token.getType());
-                    }
-                    else {
-                        noError = true;
-                    }
-
+                    rootNode.setCar(new IntermediateCode());
+                    rootNode.getCar().setText(token.getText());
+                    rootNode.getCar().setType(token.getType());
                     rootNode.setCdr(parseList());
             }
         }
