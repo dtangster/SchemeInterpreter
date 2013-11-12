@@ -9,15 +9,16 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
 
     public SymbolTableStack() {
         currentNestingLevel = 0;
-        SymbolTable initial = new SymbolTable();
-        add(initial);
+        SymbolTable global = new SymbolTable();
+        add(global);
+        push();
 
         for (String name : TokenType.RESERVED_SYMBOLS.keySet()) {
-            initial.enter(name);
+            global.enter(name);
         }
 
         for (String name : TokenType.RESERVED_WORDS.keySet()) {
-            initial.enter(name);
+            global.enter(name);
         }
     }
 

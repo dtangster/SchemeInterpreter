@@ -81,17 +81,22 @@ public class Parser {
                     rootNode.setCdr(parseList());
 
                     // Linking parse tree with symbol table
+                    SymbolTableEntry entry;
+
                     if (rootNode.getCar() != null && rootNode.getCar().getType() != null) {
                         switch (rootNode.getCar().getType()) {
                             case DEFINE:
-                                //SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCdr().getCar().getText());
-                                //entry.put(SymbolTableEntryAttribute.VALUE, rootNode.getCdr().getCdr());
+                                //entry = symbolTableStack.lookup(rootNode.getCdr().getCar().getText());
+                                //entry.put(SymbolTableEntryAttribute.BIND, rootNode.getCdr().getCdr());
                                 break;
                             case LAMBDA:
-                                //SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCdr().getCdr().getCar().getText());
+                                //entry = symbolTableStack.lookup(rootNode.getCdr().getCdr().getCar().getText());
                                 //entry.put(SymbolTableEntryAttribute.VALUE, rootNode.getCdr().getCdr());
                                 break;
                             case LET:
+                            case LETSTAR:
+                            case LETREC:
+
                         }
                     }
 
@@ -108,7 +113,7 @@ public class Parser {
 
                             // TODO: Comment this line out if you want to see parse tree for debugging.
                             // TODO: This should stay in the final version.
-                            //symbolTableStack.pop();
+                            symbolTableStack.pop();
 
                             if (scanner.currentChar() == ')' || scanner.peekChar() == ')') {
                                 parseList();
@@ -117,13 +122,11 @@ public class Parser {
                     }
                 case END_OF_FILE:
                     return null;
-                case DEFINE:
+
                 case LAMBDA:
                 case LET:
                 case LETSTAR:
                 case LETREC:
-                    rootNode.setText(token.getText());
-                    rootNode.setType(token.getType());
                     symbolTableStack.push();
 
                     if (!parenthesisCount.empty()) {
@@ -131,6 +134,9 @@ public class Parser {
                     }
 
                     parenthesisCount.push(1);
+                case DEFINE:
+                    rootNode.setText(token.getText());
+                    rootNode.setType(token.getType());
                     break;
                 case RESERVED_SYMBOL:
                 case REGULAR_SYMBOL:

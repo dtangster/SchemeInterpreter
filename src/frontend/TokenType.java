@@ -54,7 +54,6 @@ public enum TokenType {
 
         ALL_SYMBOLS.putAll(RESERVED_WORDS);
         ALL_SYMBOLS.putAll(RESERVED_SYMBOLS);
-        SCOPE_STARTER.add(DEFINE);
         SCOPE_STARTER.add(LAMBDA);
         SCOPE_STARTER.add(LET);
         SCOPE_STARTER.add(LETSTAR);
