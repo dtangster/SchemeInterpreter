@@ -70,6 +70,7 @@ public class Parser {
 
                     rootNode.setCar(parseList());
 
+                    // Create extra parent node when DEFINE, LET, LETSTAR, or LETREC is read
                     IntermediateCode newRoot = null;
                     if (rootNode.getCar() != null && rootNode.getCar().getType() != null
                             && TokenType.SCOPE_STARTER.contains(rootNode.getCar().getType()))
@@ -81,25 +82,14 @@ public class Parser {
                     rootNode.setCdr(parseList());
 
                     // Linking parse tree with symbol table
-                    SymbolTableEntry entry;
-
-                    if (rootNode.getCar() != null && rootNode.getCar().getType() != null) {
-                        switch (rootNode.getCar().getType()) {
-                            case DEFINE:
-                                //entry = symbolTableStack.lookup(rootNode.getCdr().getCar().getText());
-                                //entry.put(SymbolTableEntryAttribute.BIND, rootNode.getCdr().getCdr());
-                                break;
-                            case LAMBDA:
-                                //entry = symbolTableStack.lookup(rootNode.getCdr().getCdr().getCar().getText());
-                                //entry.put(SymbolTableEntryAttribute.VALUE, rootNode.getCdr().getCdr());
-                                break;
-                            case LET:
-                            case LETSTAR:
-                            case LETREC:
-
-                        }
+                    if (rootNode.getCar() != null && rootNode.getCar().getType() != null
+                            && rootNode.getCar().getType() == TokenType.REGULAR_SYMBOL)
+                    {
+                        SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCar().getText());
+                        entry.put(SymbolTableEntryAttribute.BIND, rootNode.getCdr().getCdr());
                     }
 
+                    // Set the new root if DEFINE, LET, LETSTAR, or LETREC is read
                     if (newRoot != null) {
                         rootNode = newRoot;
                     }
@@ -122,7 +112,6 @@ public class Parser {
                     }
                 case END_OF_FILE:
                     return null;
-
                 case LAMBDA:
                 case LET:
                 case LETSTAR:
