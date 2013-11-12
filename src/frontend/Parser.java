@@ -71,7 +71,7 @@ public class Parser {
                     rootNode.setCar(parseList());
 
                     IntermediateCode newRoot = null;
-                    if (rootNode.getCar().getType() != null
+                    if (rootNode.getCar() != null && rootNode.getCar().getType() != null
                             && (rootNode.getCar().getType() == TokenType.LAMBDA || rootNode.getCar().getType() == TokenType.LET))
                     {
                         newRoot = new IntermediateCode();
@@ -100,7 +100,7 @@ public class Parser {
                     }
                     break;
                 case RIGHT_PAREN:
-                    if (parenthesisCount.peek() > 0) {
+                    if (!parenthesisCount.empty() && parenthesisCount.peek() > 0) {
                         parenthesisCount.push(parenthesisCount.pop() - 1);
 
                         if (parenthesisCount.peek() == 0) {
@@ -120,6 +120,8 @@ public class Parser {
                 case DEFINE:
                 case LAMBDA:
                 case LET:
+                case LETSTAR:
+                case LETREC:
                     rootNode.setText(token.getText());
                     rootNode.setType(token.getType());
                     symbolTableStack.push();

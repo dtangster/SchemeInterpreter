@@ -20,6 +20,7 @@ public class Backend {
         System.out.println("\n----------Printing Parse Tree---------\n");
         for(IntermediateCode iCode : intermediateCodes) {
             printParseTree(iCode);
+            System.out.println("");
         }
 
         System.out.println("\n----------Printing Symbol Table---------\n");
