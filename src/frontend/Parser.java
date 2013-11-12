@@ -72,7 +72,7 @@ public class Parser {
 
                     IntermediateCode newRoot = null;
                     if (rootNode.getCar() != null && rootNode.getCar().getType() != null
-                            && (rootNode.getCar().getType() == TokenType.LAMBDA || rootNode.getCar().getType() == TokenType.LET))
+                            && TokenType.SCOPE_STARTER.contains(rootNode.getCar().getType()))
                     {
                         newRoot = new IntermediateCode();
                         newRoot.setCar(rootNode);

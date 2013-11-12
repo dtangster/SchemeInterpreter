@@ -1,6 +1,7 @@
 package frontend;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public enum TokenType {
     // Reserved words (Does not go into symbol table)
@@ -39,6 +40,7 @@ public enum TokenType {
     public static HashMap<String, TokenType> ALL_SYMBOLS = new HashMap<String, TokenType>();
     public static HashMap<String, TokenType> RESERVED_WORDS = new HashMap<String, TokenType>();
     public static HashMap<String, TokenType> RESERVED_SYMBOLS = new HashMap<String, TokenType>();
+    public static HashSet<TokenType> SCOPE_STARTER = new HashSet<TokenType>();
     static {
         TokenType values[] = TokenType.values();
         for (int i = FIRST_RESERVED_WORD_INDEX; i <= LAST_RESERVED_WORD_INDEX; ++i) {
@@ -52,5 +54,10 @@ public enum TokenType {
 
         ALL_SYMBOLS.putAll(RESERVED_WORDS);
         ALL_SYMBOLS.putAll(RESERVED_SYMBOLS);
+        SCOPE_STARTER.add(DEFINE);
+        SCOPE_STARTER.add(LAMBDA);
+        SCOPE_STARTER.add(LET);
+        SCOPE_STARTER.add(LETSTAR);
+        SCOPE_STARTER.add(LETREC);
     }
 }
