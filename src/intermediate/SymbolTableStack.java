@@ -1,5 +1,7 @@
 package intermediate;
 
+import frontend.TokenType;
+
 import java.util.ArrayList;
 
 public class SymbolTableStack extends ArrayList<SymbolTable> {
@@ -10,7 +12,13 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
         SymbolTable initial = new SymbolTable();
         add(initial);
 
-        //TODO: We have to add stuff to the initial symbol table, such as CAR, CDR, etc.
+        for (String name : TokenType.RESERVED_SYMBOLS.keySet()) {
+            initial.enter(name);
+        }
+
+        for (String name : TokenType.RESERVED_WORDS.keySet()) {
+            initial.enter(name);
+        }
     }
 
     public int getCurrentNestingLevel() {

@@ -96,7 +96,7 @@ public class Parser {
 
                             // TODO: Comment this line out if you want to see parse tree for debugging.
                             // TODO: This should stay in the final version.
-                            // symbolTableStack.pop();
+                            //symbolTableStack.pop();
 
                             if (scanner.currentChar() == ')' || scanner.peekChar() == ')') {
                                 parseList();
@@ -136,7 +136,7 @@ public class Parser {
                             // If it gets in here, that means the symbol has been defined elsewhere. So use it!
 
                             // TODO: This line is for debugging only. It should NOT be entered into local symbol table.
-                            symbolTableStack.enterLocal(token.getText());
+                            //symbolTableStack.enterLocal(token.getText());
                         }
                         else {
                             symbolTableStack.enterLocal(token.getText());
