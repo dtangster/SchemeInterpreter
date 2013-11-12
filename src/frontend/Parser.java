@@ -58,7 +58,7 @@ public class Parser {
                 System.out.println("Real");
             }
 
-            if (scanner.getPosition() == 0) {
+            if (scanner.getPosition() == 0 && scanner.peekChar() != '\0') {
                 System.out.println(scanner);
             }
 
