@@ -15,7 +15,7 @@ public class Parser
 {
     private Scanner scanner;
     private TreeMap<String, SymbolTableEntry> symtab;
-    private ArrayList<IntermediateCode> trees;
+    private ArrayList<IntermediateCode> topLevelLists;
     private boolean isDefine;
     private String functionName;
     private int level;
@@ -31,7 +31,7 @@ public class Parser
     {
         this.scanner = scanner;
         this.symtab = new TreeMap<String, SymbolTableEntry>();
-        this.trees = new ArrayList<IntermediateCode>();
+        this.topLevelLists = new ArrayList<IntermediateCode>();
         this.isDefine = false;
         this.functionName = null;
     }
@@ -48,7 +48,7 @@ public class Parser
             TokenType tokenType = token.getType();
 
             if (tokenType == TokenType.LEFT_PAREN) {
-                trees.add(parseList());
+                topLevelLists.add(parseList());
             }
         }
     }
@@ -61,15 +61,20 @@ public class Parser
     private Token nextToken()
     {
 
-         Token token = Scanner.nextToken();
+        Token token = null;
+        try {
+            token = scanner.nextToken();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         TokenType tokenType = token.getType();
-
+          //Linking parser tree and symbol table.
           if(isDefine && tokenType != TokenType.LEFT_PAREN)
         {
             isDefine = false;
             functionName = token.getText();
-            SymbolTableEntry entry = new SymbolTableEntry(functionName);
-            topLevel.addEntry(functionName, new SymbolTableEntry(functionName));
+            //SymbolTableEntry entry = new SymbolTableEntry(functionName);
+            //topLevel.addEntry(functionName, new SymbolTableEntry(functionName));
         }
 
         if(tokenType == TokenType.DEFINE)
@@ -79,20 +84,7 @@ public class Parser
         return token;
     }
 
-   /* private Token nextToken()
-    {
-        try
-        {
-            Token token = scanner.nextToken();
-            TokenType tokenType = token.getType();
-            return token;
-        }
-        catch (IOException e)
-        {
-            exit(1);
-        }
-        return null;
-    } */
+
 
     /**
      * Parse a list and build a parse tree.
@@ -139,4 +131,21 @@ public class Parser
 
         return root;  // of the parse tree
     }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public ArrayList<IntermediateCode> getICodes() {
+        return topLevelLists;
+    }
+
+    public SymbolTableStack getSymTabStack() {
+        return symbolTableStack;
+    }
+
+    public Token currentToken() {
+        return scanner.currentToken();
+    }
+
 }

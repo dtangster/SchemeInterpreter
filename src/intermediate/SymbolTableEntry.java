@@ -8,6 +8,11 @@ public class SymbolTableEntry extends HashMap<SymbolTableEntryAttribute, Object>
     private SymbolTable symbolTable; // The table that contains this entry
     private IntermediateCode linkNode;
 
+    /*public SymbolTableEntry(String name) {
+        this.name = name;
+        //this.symbolTable = symbolTable;
+    }  */
+
     public SymbolTableEntry(String name, SymbolTable symbolTable) {
         this.name = name;
         this.symbolTable = symbolTable;
