@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class SymbolTableEntry extends HashMap<SymbolTableEntryAttribute, Object> {
     private String name;
     private SymbolTable symbolTable; // The table that contains this entry
+    private IntermediateCode linkNode;
 
     public SymbolTableEntry(String name, SymbolTable symbolTable) {
         this.name = name;
@@ -24,11 +25,16 @@ public class SymbolTableEntry extends HashMap<SymbolTableEntryAttribute, Object>
         put(key, value);
     }
 
-    public Object getAttribute(SymbolTableEntryAttribute key) {
+    public Object getValue(SymbolTableEntryAttribute key) {
         return get(key);
     }
 
     public String toString() {
         return name;
+    }
+
+    public void setIntermediateCode(IntermediateCode node)
+    {
+        this.linkNode = node;
     }
 }

@@ -1,5 +1,7 @@
 package frontend;
 
+import intermediate.SymbolTableEntry;
+
 import java.io.IOException;
 
 public class Token {
@@ -9,12 +11,18 @@ public class Token {
     protected Source source;   // source
     protected int lineNum;     // line number of the token's source line
     protected int position;    // position of the first token character
+    private SymbolTableEntry en;
 
     public Token(Source source) throws IOException {
         this.source = source;
         this.lineNum = source.getLineNum();
         this.position = source.getPosition();
         extract();
+    }
+
+    public void setEntry(SymbolTableEntry en)
+    {
+        this.en = en;
     }
 
     public TokenType getType() {

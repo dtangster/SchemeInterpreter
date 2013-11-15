@@ -8,6 +8,7 @@ public class IntermediateCode {
     private SymbolTableEntry entry;
     private IntermediateCode car;
     private IntermediateCode cdr;
+    private SymbolTable symbolTable;
 
     public String getText() {
         return text;
@@ -51,5 +52,10 @@ public class IntermediateCode {
 
     public String toString() {
         return '\t' + text + '\t' + type;
+    }
+
+    public void setSymbolTable (SymbolTable symbolTable)
+    {
+        this.symbolTable = symbolTable;
     }
 }

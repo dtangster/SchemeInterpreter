@@ -80,16 +80,19 @@ public class Parser {
                     rootNode.setCdr(parseList());
 
                     // Linking parse tree with symbol table
-                    /*
                     if (rootNode.getCar() != null && rootNode.getCar().getType() != null
                             && rootNode.getCar().getType() == TokenType.REGULAR_SYMBOL
                             && rootNode.getCdr() != null && rootNode.getCdr().getCar() != null)
                     {
                         SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCar().getText());
                         entry.put(SymbolTableEntryAttribute.BIND, rootNode.getCdr().getCar());
-                        rootNode.getCar().setEntry(entry);
+                        token.setEntry(entry);
+                        //SymbolTableEntry.setIntermediateCode();
+                        //rootNode.getCar().setEntry(entry);
+
                     }
-                    */
+
+
 
                     // Set the new root if DEFINE, LET, LETSTAR, or LETREC is read
                     if (newRoot != null) {
