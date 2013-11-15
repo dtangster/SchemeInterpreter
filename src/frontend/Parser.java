@@ -1,181 +1,142 @@
 package frontend;
 
-import intermediate.IntermediateCode;
-import intermediate.SymbolTableEntry;
-import intermediate.SymbolTableEntryAttribute;
-import intermediate.SymbolTableStack;
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.TreeMap;
 
-public class Parser {
-    protected SymbolTableStack symbolTableStack;
-    protected ArrayList<IntermediateCode> topLevelLists;
-    protected Scanner scanner;
-    private Stack<Integer> parenthesisCount;
+import intermediate.*;
+import backend.*;
 
-    public Parser(Scanner scanner) {
-        topLevelLists = new ArrayList<IntermediateCode>();
-        symbolTableStack = new SymbolTableStack();
+/**
+ * A simple Scheme parser.
+ * @author Ronald Mak
+ */
+public class Parser
+{
+    private Scanner scanner;
+    private TreeMap<String, SymbolTableEntry> symtab;
+    private ArrayList<IntermediateCode> trees;
+    private boolean isDefine;
+    private String functionName;
+    private int level;
+    private SymbolTable topLevel;
+    private SymbolTableStack symbolTableStack;
+
+
+    /**
+     * Constructor.
+     * @param scanner the simple Scheme scanner.
+     */
+    public Parser(Scanner scanner)
+    {
         this.scanner = scanner;
+        this.symtab = new TreeMap<String, SymbolTableEntry>();
+        this.trees = new ArrayList<IntermediateCode>();
+        this.isDefine = false;
+        this.functionName = null;
+    }
+    /**
+     * The parse method.
+     * This version also builds parse trees.
+     */
+    public void parse()
+    {
+        Token token;
+
+        // Loop to get tokens until the end of file.
+        while ((token = nextToken()).getType() != TokenType.END_OF_FILE) {
+            TokenType tokenType = token.getType();
+
+            if (tokenType == TokenType.LEFT_PAREN) {
+                trees.add(parseList());
+            }
+        }
     }
 
-    public IntermediateCode parse() throws IOException {
-        System.out.println("\n----------Printing Tokens---------\n");
+    /**
+     * Get and return the next token from the scanner.
+     * Enter identifiers and symbols into the symbol table.
+     * @return the next token.
+     */
+    private Token nextToken()
+    {
 
-        while (scanner.peekChar() != Source.EOF) {
-            parenthesisCount = new Stack<Integer>();
-            IntermediateCode root = parseList();
-            topLevelLists.add(root);
+         Token token = Scanner.nextToken();
+        TokenType tokenType = token.getType();
+
+          if(isDefine && tokenType != TokenType.LEFT_PAREN)
+        {
+            isDefine = false;
+            functionName = token.getText();
+            SymbolTableEntry entry = new SymbolTableEntry(functionName);
+            topLevel.addEntry(functionName, new SymbolTableEntry(functionName));
         }
 
+        if(tokenType == TokenType.DEFINE)
+            isDefine = true;
+
+
+        return token;
+    }
+
+   /* private Token nextToken()
+    {
+        try
+        {
+            Token token = scanner.nextToken();
+            TokenType tokenType = token.getType();
+            return token;
+        }
+        catch (IOException e)
+        {
+            exit(1);
+        }
         return null;
-    }
+    } */
 
-    public IntermediateCode parseList() {
-        IntermediateCode rootNode = new IntermediateCode();
+    /**
+     * Parse a list and build a parse tree.
+     * @return the root of the tree.
+     */
+    private IntermediateCode parseList()
+    {
+        IntermediateCode root = new IntermediateCode();
+        IntermediateCode currentNode = null;
 
-        try {
-            Token token = nextToken();
-            System.out.print("\t" + token.getText() + "\t");
+        // Get the first token after the opening left parenthesis.
+        Token token = nextToken();
+        TokenType tokenType = token.getType();
 
-            if (TokenType.RESERVED_WORDS.containsKey(token.getText())) {
-                System.out.println("Reserved Word");
+        // Loop to get tokens until the closing right parenthesis.
+        while (tokenType != TokenType.RIGHT_PAREN) {
+
+            // Set currentNode initially to the root,
+            // then move it down the cdr links.
+            if (currentNode == null) {
+                currentNode = root;
             }
-            else if (TokenType.RESERVED_SYMBOLS.containsKey(token.getText())) {
-                System.out.println("Reserved Symbol");
-            }
-            else if (token.getType() == TokenType.REGULAR_SYMBOL) {
-                System.out.println("Symbol");
-            }
-            else if (token.getType() == TokenType.INTEGER) {
-                System.out.println("Integer");
-            }
-            else if (token.getType() == TokenType.REAL) {
-                System.out.println("Real");
+            else {
+                IntermediateCode newNode = new IntermediateCode();
+                currentNode.setCdr(newNode);
+                currentNode = newNode;
             }
 
-            if (scanner.getPosition() == 0 && scanner.peekChar() != '\0') {
-                System.out.println(scanner);
+            // Left parenthesis: Parse a sublist and return the root
+            // of the subtree which is set as the car of the current node.
+            // Otherwise, set the token as the data of the current node.
+            if (tokenType == TokenType.LEFT_PAREN) {
+                currentNode.setCar(parseList());
+            }
+            else {
+                currentNode.setText(token.getText());
+                currentNode.setType(token.getType());
             }
 
-            switch (token.getType()) {
-                case LEFT_PAREN:
-                    if (!parenthesisCount.empty()) {
-                        parenthesisCount.push(parenthesisCount.pop() + 1);
-                    }
-
-                    rootNode.setCar(parseList());
-
-                    // Create extra parent node when DEFINE, LET, LETSTAR, or LETREC is read
-                    IntermediateCode newRoot = null;
-                    if (rootNode.getCar() != null && rootNode.getCar().getType() != null
-                            && TokenType.SCOPE_STARTER.contains(rootNode.getCar().getType()))
-                    {
-                        newRoot = new IntermediateCode();
-                        newRoot.setCar(rootNode);
-                    }
-
-                    rootNode.setCdr(parseList());
-
-                    // Linking parse tree with symbol table
-                    if (rootNode.getCar() != null && rootNode.getCar().getType() != null
-                            && rootNode.getCar().getType() == TokenType.REGULAR_SYMBOL
-                            && rootNode.getCdr() != null && rootNode.getCdr().getCar() != null)
-                    {
-                        SymbolTableEntry entry = symbolTableStack.lookup(rootNode.getCar().getText());
-                        entry.put(SymbolTableEntryAttribute.BIND, rootNode.getCdr().getCar());
-                        token.setEntry(entry);
-                        //SymbolTableEntry.setIntermediateCode();
-                        //rootNode.getCar().setEntry(entry);
-
-                    }
-
-
-
-                    // Set the new root if DEFINE, LET, LETSTAR, or LETREC is read
-                    if (newRoot != null) {
-                        rootNode = newRoot;
-                    }
-                    break;
-                case RIGHT_PAREN:
-                    if (!parenthesisCount.empty() && parenthesisCount.peek() > 0) {
-                        parenthesisCount.push(parenthesisCount.pop() - 1);
-
-                        if (parenthesisCount.peek() == 0) {
-                            parenthesisCount.pop();
-
-                            // TODO: Comment this line out if you want to see parse tree for debugging.
-                            // TODO: This should stay in the final version.
-                            symbolTableStack.pop();
-
-                            if (scanner.currentChar() == ')' || scanner.peekChar() == ')') {
-                                parseList();
-                            }
-                        }
-                    }
-                case END_OF_FILE:
-                    return null;
-                case LAMBDA:
-                case LET:
-                case LETSTAR:
-                case LETREC:
-                    symbolTableStack.push();
-
-                    if (!parenthesisCount.empty()) {
-                        parenthesisCount.push(parenthesisCount.pop() - 1);
-                    }
-
-                    parenthesisCount.push(1);
-                case DEFINE:
-                    rootNode.setText(token.getText());
-                    rootNode.setType(token.getType());
-                    break;
-                case RESERVED_SYMBOL:
-                case REGULAR_SYMBOL:
-                    SymbolTableEntry symbol = symbolTableStack.lookup(token.getText());
-
-                    if (symbol != null) {
-                        // If it gets in here, that means the symbol has been defined elsewhere. So use it!
-
-                        // TODO: This line is for debugging only. It should NOT be entered into local symbol table.
-                        //symbolTableStack.enterLocal(token.getText());
-                    }
-                    else {
-                        symbolTableStack.enterLocal(token.getText());
-                    }
-                default:
-                    rootNode.setCar(new IntermediateCode());
-                    rootNode.getCar().setText(token.getText());
-                    rootNode.getCar().setType(token.getType());
-                    rootNode.setCdr(parseList());
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+            // Get the next token for the next time around the loop.
+            token = nextToken();
+            tokenType = token.getType();
         }
 
-        return rootNode;
-    }
-
-    public Scanner getScanner() {
-        return scanner;
-    }
-
-    public ArrayList<IntermediateCode> getICodes() {
-        return topLevelLists;
-    }
-
-    public SymbolTableStack getSymTabStack() {
-        return symbolTableStack;
-    }
-
-    public Token currentToken() {
-        return scanner.currentToken();
-    }
-
-    public Token nextToken() throws IOException {
-        return scanner.nextToken();
+        return root;  // of the parse tree
     }
 }

@@ -30,6 +30,12 @@ public class SymbolTable extends TreeMap<String, SymbolTableEntry> {
         this.nestingLevel = nestingLevel;
     }
 
+
+    public void addEntry(String name, SymbolTableEntry entry)
+    {
+        put(name, entry);
+    }
+
     public SymbolTableEntry enter(String name) {
         SymbolTableEntry entry = new SymbolTableEntry(name, this);
         put(name, entry);
