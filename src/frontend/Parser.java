@@ -2,6 +2,7 @@ package frontend;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.TreeMap;
 
 import intermediate.*;
@@ -21,6 +22,7 @@ public class Parser
     private int level;
     private SymbolTable topLevel;
     private SymbolTableStack symbolTableStack;
+    private Stack<Integer> parenthesisCount;
 
 
     /**
@@ -74,12 +76,46 @@ public class Parser
             isDefine = false;
             functionName = token.getText();
             SymbolTableEntry entry = new SymbolTableEntry(functionName);
+            token.setEntry(entry);
             topLevel.addEntry(functionName, new SymbolTableEntry(functionName));
         }
 
-        if(tokenType == TokenType.DEFINE)
-            isDefine = true;
+        switch (token.getType()) {
+            case LEFT_PAREN:
+                if (!parenthesisCount.empty()) {
+                    parenthesisCount.push(parenthesisCount.pop() + 1);
+                }
+                break;
+            case RIGHT_PAREN:
+                if (!parenthesisCount.empty() && parenthesisCount.peek() > 0) {
+                    parenthesisCount.push(parenthesisCount.pop() - 1);
 
+                    if (parenthesisCount.peek() == 0) {
+                        parenthesisCount.pop();
+
+                        // TODO: Comment this line out if you want to see parse tree for debugging.
+                        // TODO: This should stay in the final version.
+                        symbolTableStack.pop();
+
+                        /*if (scanner.currentChar() == ')' || scanner.peekChar() == ')') {
+                            parseList();
+                        } */
+                    }
+                }
+            case END_OF_FILE:
+                return null;
+            case LAMBDA:
+            case LET:
+            case LETSTAR:
+            case LETREC:
+                symbolTableStack.push();
+
+                if (!parenthesisCount.empty()) {
+                    parenthesisCount.push(parenthesisCount.pop() - 1);
+                }
+
+                parenthesisCount.push(1);
+        }
 
         return token;
     }
@@ -101,6 +137,9 @@ public class Parser
 
         // Loop to get tokens until the closing right parenthesis.
         while (tokenType != TokenType.RIGHT_PAREN) {
+
+
+            parenthesisCount = new Stack<Integer>();
 
             // Set currentNode initially to the root,
             // then move it down the cdr links.
