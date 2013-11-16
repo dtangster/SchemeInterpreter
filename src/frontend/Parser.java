@@ -69,12 +69,12 @@ public class Parser
         }
         TokenType tokenType = token.getType();
           //Linking parser tree and symbol table.
-          if(isDefine && tokenType != TokenType.LEFT_PAREN)
+          if(isDefine)
         {
             isDefine = false;
             functionName = token.getText();
-            //SymbolTableEntry entry = new SymbolTableEntry(functionName);
-            //topLevel.addEntry(functionName, new SymbolTableEntry(functionName));
+            SymbolTableEntry entry = new SymbolTableEntry(functionName);
+            topLevel.addEntry(functionName, new SymbolTableEntry(functionName));
         }
 
         if(tokenType == TokenType.DEFINE)
