@@ -19,8 +19,7 @@ public class Parser
     private ArrayList<IntermediateCode> topLevelLists;
     private boolean isDefine;
     private String functionName;
-    private int level;
-    private SymbolTable topLevel;
+    private int toplevel;
     private SymbolTableStack symbolTableStack;
     private Stack<Integer> parenthesisCount;
 
@@ -36,6 +35,7 @@ public class Parser
         this.topLevelLists = new ArrayList<IntermediateCode>();
         this.isDefine = false;
         this.functionName = null;
+        this.toplevel = 1;
     }
     /**
      * The parse method.
@@ -64,20 +64,28 @@ public class Parser
     {
 
         Token token = null;
+        // TO DO: Need to fix scanner.nextToken(); error
         try {
             token = scanner.nextToken();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         TokenType tokenType = token.getType();
-          //Linking parser tree and symbol table.
+
+        // If "define" is previous token, then current token will be function name like "proc".
+        // Then current token will point to an Top level symboltableEntry and put it into the symbolTableStack.
+
           if(isDefine)
         {
             isDefine = false;
             functionName = token.getText();
             SymbolTableEntry entry = new SymbolTableEntry(functionName);
             token.setEntry(entry);
-            topLevel.addEntry(functionName, new SymbolTableEntry(functionName));
+
+            SymbolTable toplevel = new SymbolTable(toplevel++);
+            toplevel.addEntry(functionName, entry);
+            symbolTableStack.push(toplevel);
         }
 
         switch (token.getType()) {
