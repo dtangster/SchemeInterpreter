@@ -121,7 +121,8 @@ public class Parser
             case LET:
             case LETSTAR:
             case LETREC:
-            { symbolTableStack.push();
+            {
+                symbolTableStack.push();
 
                 if (!parenthesisCount.empty()) {
                     parenthesisCount.push(parenthesisCount.pop() - 1);
@@ -129,6 +130,8 @@ public class Parser
 
                 parenthesisCount.push(1);
 
+                // increase symbolTableLevel, create symbol table for scope like Lambda, let, letstar, letrec
+                // then push it into symbolTableStack.
                 scope = true;
                 symbolTableLevel++;
                 SymbolTable table = new SymbolTable(symbolTableLevel);
@@ -140,8 +143,6 @@ public class Parser
 
         return token;
     }
-
-
 
     /**
      * Parse a list and build a parse tree.
