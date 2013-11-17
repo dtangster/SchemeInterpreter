@@ -17,7 +17,8 @@ public class Parser
     private Scanner scanner;
     private TreeMap<String, SymbolTableEntry> symtab;
     private ArrayList<IntermediateCode> topLevelLists;
-    private boolean isDefine;
+    private boolean Define;
+    private boolean Lambda;
     private String functionName;
     private int toplevel;
     private SymbolTableStack symbolTableStack;
@@ -33,7 +34,8 @@ public class Parser
         this.scanner = scanner;
         this.symtab = new TreeMap<String, SymbolTableEntry>();
         this.topLevelLists = new ArrayList<IntermediateCode>();
-        this.isDefine = false;
+        this.Define = false;
+        this.Lambda = false;
         this.functionName = null;
         this.toplevel = 1;
     }
@@ -76,9 +78,9 @@ public class Parser
         // If "define" is previous token, then current token will be function name like "proc".
         // Then current token will point to an Top level symboltableEntry and put it into the symbolTableStack.
 
-          if(isDefine)
+          if(Define)
         {
-            isDefine = false;
+            Define = false;
             functionName = token.getText();
             SymbolTableEntry entry = new SymbolTableEntry(functionName);
             token.setEntry(entry);
@@ -89,8 +91,9 @@ public class Parser
         }
 
         switch (token.getType()) {
-            case DEFINE: isDefine = true;
+            case DEFINE: Define = true;
                 break;
+
             case LEFT_PAREN:
                 if (!parenthesisCount.empty()) {
                     parenthesisCount.push(parenthesisCount.pop() + 1);
@@ -114,7 +117,7 @@ public class Parser
                 }
             case END_OF_FILE:
                 return null;
-            case LAMBDA:
+            case LAMBDA: Lambda = true;
             case LET:
             case LETSTAR:
             case LETREC:
@@ -160,6 +163,13 @@ public class Parser
                 IntermediateCode newNode = new IntermediateCode();
                 currentNode.setCdr(newNode);
                 currentNode = newNode;
+            }
+
+            // Top level's function name in the symbolTableEntry point back to current (lambda) node in the parser tree.
+            if(Lambda)
+            {
+                Lambda = false;
+                symbolTableStack.get(1).getEntry(functionName).setIntermediateCode(currentNode);
             }
 
             // Left parenthesis: Parse a sublist and return the root

@@ -36,6 +36,11 @@ public class SymbolTable extends TreeMap<String, SymbolTableEntry> {
         put(name, entry);
     }
 
+    public SymbolTableEntry getEntry(String key)
+    {
+        return get(key);
+    }
+
    /* public SymbolTableEntry enter(String name) {
         SymbolTableEntry entry = new SymbolTableEntry(name, this);
         put(name, entry);

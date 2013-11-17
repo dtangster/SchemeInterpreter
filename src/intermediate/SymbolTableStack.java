@@ -59,4 +59,5 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
     public void push() {
         add(new SymbolTable(++currentNestingLevel));
     }
+
 }
