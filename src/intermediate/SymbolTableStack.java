@@ -48,7 +48,7 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
         return foundEntry;
     }
 
-    public SymbolTable pop() {
+   /*public SymbolTable pop() {
         if (!isEmpty()) {
             return remove(currentNestingLevel--);
         }
@@ -58,6 +58,24 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
 
     public void push() {
         add(new SymbolTable(++currentNestingLevel));
+    } */
+
+
+  public void push(SymbolTable table)
+    {
+        add(table);
     }
 
+    public SymbolTable pop()
+    {
+        int lastIndex = this.size() - 1;
+        SymbolTable symboltable = this.get(lastIndex);
+        this.remove(lastIndex);
+        return symboltable;
+    }
+    public SymbolTable peek()
+    {
+        return this.get(this.size() - 1);
+            }
 }
+

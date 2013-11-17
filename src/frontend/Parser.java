@@ -15,10 +15,10 @@ import backend.*;
 public class Parser
 {
     private Scanner scanner;
-    private TreeMap<String, SymbolTableEntry> symtab;
     private ArrayList<IntermediateCode> topLevelLists;
-    private boolean Define;
-    private boolean Lambda;
+    private boolean define;
+    private boolean lambda;
+    private boolean scope;
     private String functionName;
     private int toplevel;
     private SymbolTableStack symbolTableStack;
@@ -32,10 +32,10 @@ public class Parser
     public Parser(Scanner scanner)
     {
         this.scanner = scanner;
-        this.symtab = new TreeMap<String, SymbolTableEntry>();
         this.topLevelLists = new ArrayList<IntermediateCode>();
-        this.Define = false;
-        this.Lambda = false;
+        this.define = false;
+        this.lambda = false;
+        this.scope = false;
         this.functionName = null;
         this.toplevel = 1;
     }
@@ -78,9 +78,9 @@ public class Parser
         // If "define" is previous token, then current token will be function name like "proc".
         // Then current token will point to an Top level symboltableEntry and put it into the symbolTableStack.
 
-          if(Define)
+          if(define)
         {
-            Define = false;
+            define = false;
             functionName = token.getText();
             SymbolTableEntry entry = new SymbolTableEntry(functionName);
             token.setEntry(entry);
@@ -91,7 +91,7 @@ public class Parser
         }
 
         switch (token.getType()) {
-            case DEFINE: Define = true;
+            case DEFINE: define = true;
                 break;
 
             case LEFT_PAREN:
@@ -117,17 +117,25 @@ public class Parser
                 }
             case END_OF_FILE:
                 return null;
-            case LAMBDA: Lambda = true;
+            case LAMBDA: lambda = true;
             case LET:
             case LETSTAR:
             case LETREC:
-                symbolTableStack.push();
+            { symbolTableStack.push();
 
                 if (!parenthesisCount.empty()) {
                     parenthesisCount.push(parenthesisCount.pop() - 1);
                 }
 
                 parenthesisCount.push(1);
+
+                scope = true;
+                toplevel++;
+                SymbolTable table = new SymbolTable(toplevel);
+                symbolTableStack.push(table);
+                break;
+            }
+            default:
         }
 
         return token;
@@ -166,10 +174,17 @@ public class Parser
             }
 
             // Top level's function name in the symbolTableEntry point back to current (lambda) node in the parser tree.
-            if(Lambda)
+            if(lambda)
             {
-                Lambda = false;
+                lambda = false;
                 symbolTableStack.get(1).getEntry(functionName).setIntermediateCode(currentNode);
+            }
+
+            // link the current node in the parser tree to level 2 symbolTable
+            if(scope)
+            {
+                scope = false;
+                currentNode.setSymbolTable(symbolTableStack.peek());
             }
 
             // Left parenthesis: Parse a sublist and return the root
