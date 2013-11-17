@@ -20,7 +20,7 @@ public class Parser
     private boolean lambda;
     private boolean scope;
     private String functionName;
-    private int toplevel;
+    private int symbolTableLevel;
     private SymbolTableStack symbolTableStack;
     private Stack<Integer> parenthesisCount;
 
@@ -37,7 +37,7 @@ public class Parser
         this.lambda = false;
         this.scope = false;
         this.functionName = null;
-        this.toplevel = 1;
+        this.symbolTableLevel = 1;
     }
     /**
      * The parse method.
@@ -85,7 +85,7 @@ public class Parser
             SymbolTableEntry entry = new SymbolTableEntry(functionName);
             token.setEntry(entry);
 
-            SymbolTable toplevel = new SymbolTable(toplevel++);
+            SymbolTable toplevel = new SymbolTable(symbolTableLevel++);
             toplevel.addEntry(functionName, entry);
             symbolTableStack.push(toplevel);
         }
@@ -130,8 +130,8 @@ public class Parser
                 parenthesisCount.push(1);
 
                 scope = true;
-                toplevel++;
-                SymbolTable table = new SymbolTable(toplevel);
+                symbolTableLevel++;
+                SymbolTable table = new SymbolTable(symbolTableLevel);
                 symbolTableStack.push(table);
                 break;
             }
