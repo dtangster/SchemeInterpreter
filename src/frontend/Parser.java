@@ -89,6 +89,8 @@ public class Parser
         }
 
         switch (token.getType()) {
+            case DEFINE: isDefine = true;
+                break;
             case LEFT_PAREN:
                 if (!parenthesisCount.empty()) {
                     parenthesisCount.push(parenthesisCount.pop() + 1);
