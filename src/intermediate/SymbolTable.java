@@ -41,12 +41,12 @@ public class SymbolTable extends TreeMap<String, SymbolTableEntry> {
         return get(key);
     }
 
-   /* public SymbolTableEntry enter(String name) {
-        SymbolTableEntry entry = new SymbolTableEntry(name, this);
+   public SymbolTableEntry enter(String name) {
+        SymbolTableEntry entry = new SymbolTableEntry(name);
         put(name, entry);
 
         return entry;
-    }  */
+    }
 
     public SymbolTableEntry lookup(String name) {
         return get(name);

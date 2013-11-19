@@ -10,8 +10,8 @@ public class SymbolTableStack extends ArrayList<SymbolTable> {
     public SymbolTableStack() {
         currentNestingLevel = 0;
         SymbolTable global = new SymbolTable();
-        add(global);
-        push();
+        //add(global);
+        push(global);
 
         for (String name : TokenType.RESERVED_SYMBOLS.keySet()) {
             global.enter(name);

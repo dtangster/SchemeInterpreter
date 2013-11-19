@@ -122,7 +122,7 @@ public class Parser
             case LETSTAR:
             case LETREC:
             {
-                symbolTableStack.push();
+               symbolTableStack.push(new SymbolTable());
 
                 if (!parenthesisCount.empty()) {
                     parenthesisCount.push(parenthesisCount.pop() - 1);
