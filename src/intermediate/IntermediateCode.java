@@ -1,15 +1,17 @@
 package intermediate;
 
-import frontend.TokenType;
+import frontend.*;
 
 public class IntermediateCode {
-    private String text;
-    private TokenType type;
+    //private String text;
+    //private TokenType type;
+    private Token token;
     private SymbolTableEntry entry;
     private IntermediateCode car;
     private IntermediateCode cdr;
     private SymbolTable symbolTable;
 
+    /*
     public String getText() {
         return text;
     }
@@ -24,6 +26,17 @@ public class IntermediateCode {
 
     public void setType(TokenType type) {
         this.type = type;
+    }
+    */
+
+    public Token getToken()
+    {
+        return token;
+    }
+
+    public void setToken(Token token)
+    {
+        this.token = token;
     }
 
     public SymbolTableEntry getEntry() {
@@ -51,7 +64,7 @@ public class IntermediateCode {
     }
 
     public String toString() {
-        return '\t' + text + '\t' + type;
+        return '\t' + token.getText() + '\t' + token.getType();
     }
 
     public void setSymbolTable (SymbolTable symbolTable)

@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import intermediate.*;
 import backend.*;
+
 import static java.lang.System.exit;
 
 /**
@@ -81,7 +82,7 @@ public class Parser
         // If "define" is previous token, then current token will be function name like "proc".
         // Then current token will point to an Top level symboltableEntry and put it into the symbolTableStack.
 
-          if(define)
+        if(define)
         {
             define = false;
             functionName = token.getText();
@@ -125,7 +126,7 @@ public class Parser
             case LETSTAR:
             case LETREC:
             {
-               symbolTableStack.push(new SymbolTable());
+                symbolTableStack.push(new SymbolTable());
 
                 if (!parenthesisCount.empty()) {
                     parenthesisCount.push(parenthesisCount.pop() - 1);
@@ -198,8 +199,7 @@ public class Parser
                 currentNode.setCar(parseList());
             }
             else {
-                currentNode.setText(token.getText());
-                currentNode.setType(token.getType());
+                currentNode.setToken(token);
             }
 
             // Get the next token for the next time around the loop.

@@ -42,15 +42,16 @@ public class Backend {
             return;
         }
 
-        boolean hasText = intermediateCode.getText() != null;
+        boolean hasText = (intermediateCode.getToken() != null && intermediateCode.getToken().getText() != null);
         boolean hasCar = intermediateCode.getCar() != null;
         boolean hasCdr = intermediateCode.getCdr() != null;
 
-        if (hasCar && isReserved(intermediateCode.getCar().getText())) {
+        if (hasCar && intermediateCode.getCar().getToken() != null
+                && isReserved(intermediateCode.getCar().getToken().getText())) {
             System.out.print("\n(");
         }
         else if (hasCar && hasCdr && intermediateCode.getCdr().getCdr() == null
-                && isLeaf(intermediateCode.getCar()) && !isReserved(intermediateCode.getCar().getText()))
+                && isLeaf(intermediateCode.getCar()) && !isReserved(intermediateCode.getCar().getToken().getText()))
         {
             System.out.print("(");
         }
@@ -59,9 +60,9 @@ public class Backend {
         printParseTree(intermediateCode.getCdr());
 
         if (hasText) {
-            System.out.print(intermediateCode.getText() + " ");
+            System.out.print(intermediateCode.getToken().getText() + " ");
 
-            if (intermediateCode.getType() == TokenType.LET) {
+            if (intermediateCode.getToken().getType() == TokenType.LET) {
                 System.out.print("(");
             }
         }
