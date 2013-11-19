@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import intermediate.*;
 import backend.*;
+import static java.lang.System.exit;
 
 /**
  * A simple Scheme parser.
@@ -38,6 +39,8 @@ public class Parser
         this.scope = false;
         this.functionName = null;
         this.symbolTableLevel = 1;
+        this.symbolTableStack = new SymbolTableStack();
+        this.parenthesisCount = new Stack<Integer>();
     }
     /**
      * The parse method.
@@ -116,7 +119,7 @@ public class Parser
                     }
                 }
             case END_OF_FILE:
-                return null;
+                break;
             case LAMBDA: lambda = true;
             case LET:
             case LETSTAR:
